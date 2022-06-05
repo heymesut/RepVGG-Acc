@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/04 20:00
-// Last Modified : 2022/06/04 22:21
+// Last Modified : 2022/06/05 15:05
 // File Name     : omap_biu.v
 // Description   : output feature map bus interface unit
 //
@@ -26,8 +26,10 @@ input  [7:0]       out_ch,
 input  [15:0]      map_size,
 input  [31:0]      omap_base_addr,
 input  [7:0]       out_ch_cnt,
+input              omap_write_req,
 
 // omap biu to arbiter req signal
+output             omap_biu2arb_req,
 output [31:0]      omap_biu2arb_addr,
 output [31:0]      omap_biu2arb_data,
 output             omap_biu2arb_vld,
@@ -39,6 +41,8 @@ input              map_merger2omap_biu_vld,
 output             map_merger2omap_biu_rdy
 
 );
+
+assign omap_biu2arb_req = omap_write_req;
 
 endmodule
 
