@@ -1,5 +1,18 @@
-// icb slave
-// 32 bit bus
+// +FHDR----------------------------------------------------------------------------
+// Project Name  : IC_Design
+// Author        : LKai-Xu
+// Created On    : 2022/06/04 20:50
+// Last Modified : 2022/06/04 22:21
+// File Name     : icb_slave.v
+// Description   : icb slave module
+//
+//
+// ---------------------------------------------------------------------------------
+// Modification History:
+// Date         By              Version                 Change Description
+// ---------------------------------------------------------------------------------
+// 2022/06/04   LKai-Xu         1.0                     Original
+// -FHDR----------------------------------------------------------------------------
 
 
 `define IN_ADDR_ADDR    32'h0000_0000
