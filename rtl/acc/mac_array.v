@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/04 20:04
-// Last Modified : 2022/06/04 22:21
+// Last Modified : 2022/06/05 15:03
 // File Name     : mac_array.v
 // Description   : mac array, including 32 3x3 conv systolic arrays, 32 1x1 conv units and adder tree
 //
@@ -25,6 +25,7 @@ input                  rst_n,
 input                  conv_start,
 output                 conv_done,
 output [7:0]           out_ch_cnt,
+output                 omap_write_req,
 input  [7:0]           in_ch,
 input  [7:0]           out_ch,
 input  [15:0]          map_size,

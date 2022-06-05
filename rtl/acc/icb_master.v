@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/04 21:43
-// Last Modified : 2022/06/04 22:21
+// Last Modified : 2022/06/05 15:00
 // File Name     : icb_master.v
 // Description   : icb master interface with an arbiter
 //
@@ -21,6 +21,7 @@ input                           clk,
 input                           rst_n,
 
 // weight biu to arbiter req signal
+input                           weight_biu2arb_req,
 input [31:0]                    weight_biu2arb_addr,
 input                           weight_biu2arb_vld,
 output                          weight_biu2arb_rdy,
@@ -32,6 +33,7 @@ output                          arb2weight_biu_vld,
 input                           arb2weight_biu_rdy,
 
 // imap biu to arbiter req signal
+input                           imap_biu2arb_req,
 input [31:0]                    imap_biu2arb_addr,
 input                           imap_biu2arb_vld,
 output                          imap_biu2arb_rdy,
@@ -43,6 +45,7 @@ output                          arb2imap_biu_vld,
 input                           arb2imap_biu_rdy,
 
 // omap biu to arbiter req signal
+input                           omap_biu2arb_req,
 input [31:0]                    omap_biu2arb_addr,
 input [31:0]                    omap_biu2arb_data,
 input                           omap_biu2arb_vld,

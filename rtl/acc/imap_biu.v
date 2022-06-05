@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/04 19:47
-// Last Modified : 2022/06/04 22:21
+// Last Modified : 2022/06/05 11:53
 // File Name     : imap_biu.v
 // Description   : input feature map bus interface unit
 //
@@ -29,6 +29,7 @@ input  [15:0]      map_size,
 input  [31:0]      imap_base_addr,
 
 // imap biu to arbiter req signal
+output             imap_biu2arb_req,
 output [31:0]      imap_biu2arb_addr,
 output             imap_biu2arb_vld,
 input              imap_biu2arb_rdy,
