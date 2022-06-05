@@ -106,7 +106,7 @@ begin
                         if(cnt == 8'h47) begin
                             cnt <= 8'h0;
                         end
-                        else if(arb2weight_biu_vld & arb2weig ht_biu_rdy) begin
+                        else if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
                             cnt <= cnt+1;
                         end
                     end
@@ -152,7 +152,7 @@ begin
                             weight_biu2arb_addr <= 32'h0;
                         end
                         else if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
-                            cnt <= cnt+1;
+                            weight_biu2arb_addr <= weight1_base_addr + 4'h4;
                         end
                     end
             default:begin
@@ -218,7 +218,11 @@ end
 // the 2nd~9th bit stands for the number of channel
 assign weight_waddr[31]     = (receive_cnt < 8'h47) ? 0 : 1;
 assign weight_waddr[30:23]  = out_ch_cnt;
-assign weight_waddr[22:0]   = arb2weight_biu_addr[22:0];
+wire [31:0] weight3_addr;
+wire [31:0] weight1s_addr;
+assign weight3_addr = arb2weight_biu_addr - weight3_base_addr;
+assign weight1_addr = arb2weight_biu_addr - weight1_base_addr;
+assign weight_waddr[22:0]   = (receive_cnt < 8'h47) ? weight3_addr[22:0] : weight3_addr[22:0];
 
 // weight_wdata
 assign weight_wdata = arb2weight_biu_data;
