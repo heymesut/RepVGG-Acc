@@ -67,12 +67,12 @@ begin
                         end
                     end
             2'b01:  begin
-                        if(cnt == 8'h47) begin
+                        if(cnt == 8'h47 & arb2weight_biu_vld & arb2weight_biu_rdy) begin
                             nextstate <= 2'b10;
                         end
                     end
             2'b10:  begin
-                        if(cnt == 8'h07) begin
+                        if(cnt == 8'h07 & arb2weight_biu_vld & arb2weight_biu_rdy) begin
                             nextstate <= 2'b00;
                         end
                     end
@@ -103,7 +103,7 @@ begin
     else begin
         case(state)
             2'b01:  begin
-                        if(cnt == 8'h47) begin
+                        if(cnt == 8'h47 & arb2weight_biu_vld & arb2weight_biu_rdy) begin
                             cnt <= 8'h0;
                         end
                         else if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
@@ -111,7 +111,7 @@ begin
                         end
                     end
             2'b10:  begin
-                        if(cnt == 8'h07) begin
+                        if(cnt == 8'h07 & arb2weight_biu_vld & arb2weight_biu_rdy) begin
                             cnt <= 8'h0;
                         end
                         else if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
@@ -144,7 +144,7 @@ begin
                             weight_biu2arb_addr <= weight1_base_addr + out_ch * 12'h020;
                         end
                         else if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
-                            weight_biu2arb_addr <= weight1_base_addr + 4'h4;
+                            weight_biu2arb_addr <= weight_biu2arb_addr + 4'h4;
                         end
                     end
             2'b10:  begin
@@ -152,7 +152,7 @@ begin
                             weight_biu2arb_addr <= 32'h0;
                         end
                         else if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
-                            weight_biu2arb_addr <= weight1_base_addr + 4'h4;
+                            weight_biu2arb_addr <= weight_biu2arb_addr + 4'h4;
                         end
                     end
             default:begin
@@ -204,7 +204,7 @@ begin
         receive_cnt <= 8'b0;
     end
     else begin
-        if(receive_cnt == 8'h4f) begin
+        if(receive_cnt == 8'h4f & arb2weight_biu_vld & arb2weight_biu_rdy) begin
             receive_cnt <= 8'b0;
         end
         else if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
@@ -222,7 +222,7 @@ wire [31:0] weight3_addr;
 wire [31:0] weight1s_addr;
 assign weight3_addr = arb2weight_biu_addr - weight3_base_addr;
 assign weight1_addr = arb2weight_biu_addr - weight1_base_addr;
-assign weight_waddr[22:0]   = (receive_cnt < 8'h47) ? weight3_addr[22:0] : weight3_addr[22:0];
+assign weight_waddr[22:0]   = (receive_cnt < 8'h47) ? weight3_addr[22:0] : weight1_addr[22:0];
 
 // weight_wdata
 assign weight_wdata = arb2weight_biu_data;
@@ -240,7 +240,7 @@ begin
         if(weight_done == 1'b1) begin
             weight_done <= 1'b0;
         end
-        else if(receive_cnt == 8'h4f) begin
+        else if(receive_cnt == 8'h4f & arb2weight_biu_vld & arb2weight_biu_rdy) begin
             weight_done <= 1'b1;
         end
     end
