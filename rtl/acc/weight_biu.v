@@ -140,7 +140,7 @@ begin
                         end
                     end
             2'b01:  begin
-                        if(cnt == 8'h47) begin
+                        if(cnt == 8'h47 & arb2weight_biu_vld & arb2weight_biu_rdy) begin
                             weight_biu2arb_addr <= weight1_base_addr + out_ch * 12'h020;
                         end
                         else if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
@@ -148,7 +148,7 @@ begin
                         end
                     end
             2'b10:  begin
-                        if(cnt == 8'h07) begin
+                        if(cnt == 8'h07 & arb2weight_biu_vld & arb2weight_biu_rdy) begin
                             weight_biu2arb_addr <= 32'h0;
                         end
                         else if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
