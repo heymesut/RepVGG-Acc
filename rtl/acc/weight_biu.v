@@ -52,6 +52,8 @@ reg [1:0]   nextstate;
 reg [1:0]   state;
 reg [7:0]   cnt;
 reg [7:0]   receive_cnt;
+reg [5:0]   receive_bit_cnt;
+reg [5:0]   receive_ch_cnt;
 
 // FSM nextstate
 always@(posedge clk)
@@ -136,19 +138,19 @@ begin
         case(state)
             2'b00:  begin
                         if(nextstate == 2'b01) begin
-                            weight_biu2arb_addr <= weight3_base_addr + out_ch * 12'h240;
+                            weight_biu2arb_addr <= weight3_base_addr + out_ch_cnt * 8'h90;
                         end
                     end
             2'b01:  begin
-                        if(cnt == 8'h47 & arb2weight_biu_vld & arb2weight_biu_rdy) begin
-                            weight_biu2arb_addr <= weight1_base_addr + out_ch * 12'h020;
+                        if(cnt == 8'h8f & arb2weight_biu_vld & arb2weight_biu_rdy) begin
+                            weight_biu2arb_addr <= weight1_base_addr + out_ch_cnt * 8'h010;
                         end
                         else if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
                             weight_biu2arb_addr <= weight_biu2arb_addr + 4'h4;
                         end
                     end
             2'b10:  begin
-                        if(cnt == 8'h07 & arb2weight_biu_vld & arb2weight_biu_rdy) begin
+                        if(cnt == 8'h0f & arb2weight_biu_vld & arb2weight_biu_rdy) begin
                             weight_biu2arb_addr <= 32'h0;
                         end
                         else if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
@@ -204,7 +206,7 @@ begin
         receive_cnt <= 8'b0;
     end
     else begin
-        if(receive_cnt == 8'h4f & arb2weight_biu_vld & arb2weight_biu_rdy) begin
+        if(receive_cnt == 8'h9f & arb2weight_biu_vld & arb2weight_biu_rdy) begin
             receive_cnt <= 8'b0;
         end
         else if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
@@ -212,6 +214,47 @@ begin
         end
     end
 end
+
+// receive bit counter
+// point to the location of weight in kernel
+always@(posedge clk)
+begin
+    if(!rst_n) begin
+        receive_bit_cnt <= 6'b0;
+    end
+    else begin
+        if(receive_cnt <= 8'h9f) begin
+            if(receive_bit_cnt == 6'h08 & arb2weight_biu_vld & arb2weight_biu_rdy) begin
+                receive_cnt <= 8'b0;
+            end
+            else if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
+                receive_bit_cnt <= receive_bit_cnt + 1;
+            end
+        end
+    end
+end
+
+// receive bit counter
+// point to the number of input channel
+always@(posedge clk)
+begin
+    if(!rst_n) begin
+        receive_ch_cnt <= 6'b0;
+    end
+    else begin
+        if(receive_cnt <= 8'h9f) begin
+            if(receive_bit_cnt == 6'h08 & arb2weight_biu_vld & arb2weight_biu_rdy) begin
+                receive_ch_cnt <= receive_ch_cnt + 1;
+            end
+        end
+        else begin
+            if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
+                receive_ch_cnt <= receive_ch_cnt + 1;
+            end
+        end
+    end
+end
+
 
 // weight_waddr
 // the first bit stands for 3*3(0) or 1*1(1)
