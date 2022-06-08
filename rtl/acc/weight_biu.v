@@ -254,7 +254,7 @@ end
 // weight_waddr
 // the first bit stands for 3*3(0) or 1*1(1)
 // the 2nd~9th bit stands for the number of channel
-assign weight_waddr[31]     = (receive_cnt < 8'h47) ? 0 : 1;
+assign weight_waddr[31]     = (receive_cnt < 8'h90) ? 0 : 1;
 assign weight_waddr[30:23]  = out_ch_cnt;
 assign weight_waddr[5:0]    = receive_ch_cnt;
 assign weight_waddr[11:6]   = receive_bit_cnt;
