@@ -1,6 +1,6 @@
 package refmodel_pkg;
 
-    import generator_pkg :: conv_data;
+    import generator_pkg :: convdata;
     
     class output_data;
         logic signed [7:0] data;

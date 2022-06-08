@@ -1,4 +1,5 @@
 package scoreboard_pkg;
+
     import refmodel_pkg :: output_data;
 
     class scoreboard;
