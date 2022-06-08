@@ -53,7 +53,7 @@ reg [1:0]   state;
 reg [7:0]   cnt;
 reg [7:0]   receive_cnt;
 reg [5:0]   receive_bit_cnt;
-reg [5:0]   receive_ch_cnt;
+reg [3:0]   receive_ch_cnt;
 
 // FSM nextstate
 always@(posedge clk)
@@ -223,12 +223,14 @@ begin
         receive_bit_cnt <= 6'b0;
     end
     else begin
-        if(receive_cnt <= 8'h9f) begin
-            if(receive_bit_cnt == 6'h08 & arb2weight_biu_vld & arb2weight_biu_rdy) begin
-                receive_cnt <= 8'b0;
-            end
-            else if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
-                receive_bit_cnt <= receive_bit_cnt + 1;
+        if(receive_cnt <= 8'h8f) begin
+            if(receive_ch_cnt == 4'hf & arb2weight_biu_vld & arb2weight_biu_rdy) begin
+                if(receive_bit_cnt == 4'h8) begin
+                    receive_bit_cnt <= 0;
+                end
+                else begin 
+                    receive_bit_cnt <= receive_bit_cnt + 1;
+                end
             end
         end
     end
@@ -239,18 +241,11 @@ end
 always@(posedge clk)
 begin
     if(!rst_n) begin
-        receive_ch_cnt <= 6'b0;
+        receive_ch_cnt <= 4'b0;
     end
     else begin
-        if(receive_cnt <= 8'h9f) begin
-            if(receive_bit_cnt == 6'h08 & arb2weight_biu_vld & arb2weight_biu_rdy) begin
-                receive_ch_cnt <= receive_ch_cnt + 1;
-            end
-        end
-        else begin
-            if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
-                receive_ch_cnt <= receive_ch_cnt + 1;
-            end
+        if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
+            receive_ch_cnt <= receive_ch_cnt + 1;
         end
     end
 end
@@ -261,11 +256,9 @@ end
 // the 2nd~9th bit stands for the number of channel
 assign weight_waddr[31]     = (receive_cnt < 8'h47) ? 0 : 1;
 assign weight_waddr[30:23]  = out_ch_cnt;
-wire [31:0] weight3_addr;
-wire [31:0] weight1s_addr;
-assign weight3_addr = arb2weight_biu_addr - weight3_base_addr;
-assign weight1_addr = arb2weight_biu_addr - weight1_base_addr;
-assign weight_waddr[22:0]   = (receive_cnt < 8'h47) ? weight3_addr[22:0] : weight1_addr[22:0];
+assign weight_waddr[5:0]    = receive_ch_cnt;
+assign weight_waddr[11:6]   = receive_bit_cnt;
+assign weight_waddr[22:12]  = 0;
 
 // weight_wdata
 assign weight_wdata = arb2weight_biu_data;
