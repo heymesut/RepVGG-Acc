@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/04 19:34
-// Last Modified : 2022/06/04 22:21
+// Last Modified : 2022/06/09 00:40
 // File Name     : weight_biu.v
 // Description   : weights bus interface unit
 //
@@ -27,7 +27,7 @@ input  [7:0]       in_ch,
 input  [7:0]       out_ch,
 input  [31:0]      weight3_base_addr,
 input  [31:0]      weight1_base_addr,
-input  [7:0]       out_ch_cnt,
+input  [7:0]       weight_och_cnt,
 
 // weight biu to arbiter req signal
 output reg  [31:0]  weight_biu2arb_addr,
@@ -138,12 +138,12 @@ begin
         case(state)
             2'b00:  begin
                         if(nextstate == 2'b01) begin
-                            weight_biu2arb_addr <= weight3_base_addr + out_ch_cnt * 8'h90;
+                            weight_biu2arb_addr <= weight3_base_addr + weight_och_cnt * 8'h90;
                         end
                     end
             2'b01:  begin
                         if(cnt == 8'h8f & arb2weight_biu_vld & arb2weight_biu_rdy) begin
-                            weight_biu2arb_addr <= weight1_base_addr + out_ch_cnt * 8'h010;
+                            weight_biu2arb_addr <= weight1_base_addr + weight_och_cnt * 8'h010;
                         end
                         else if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
                             weight_biu2arb_addr <= weight_biu2arb_addr + 4'h4;
@@ -228,7 +228,7 @@ begin
                 if(receive_bit_cnt == 4'h8) begin
                     receive_bit_cnt <= 0;
                 end
-                else begin 
+                else begin
                     receive_bit_cnt <= receive_bit_cnt + 1;
                 end
             end
@@ -255,7 +255,7 @@ end
 // the first bit stands for 3*3(0) or 1*1(1)
 // the 2nd~9th bit stands for the number of channel
 assign weight_waddr[31]     = (receive_cnt < 8'h90) ? 0 : 1;
-assign weight_waddr[30:23]  = out_ch_cnt;
+assign weight_waddr[30:23]  = weight_och_cnt;
 assign weight_waddr[5:0]    = receive_ch_cnt;
 assign weight_waddr[11:6]   = receive_bit_cnt;
 assign weight_waddr[22:12]  = 0;
@@ -274,7 +274,7 @@ begin
     end
     else begin
         if(weight_done == 1'b1) begin
-            weight_done <= 1'b0;
+           weight_done <= 1'b0;
         end
         else if(receive_cnt == 8'h4f & arb2weight_biu_vld & arb2weight_biu_rdy) begin
             weight_done <= 1'b1;
