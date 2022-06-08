@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/04 19:47
-// Last Modified : 2022/06/05 11:53
+// Last Modified : 2022/06/08 21:29
 // File Name     : imap_biu.v
 // Description   : input feature map bus interface unit
 //
@@ -206,7 +206,7 @@ begin
 end
 
 // imap_waddr
-assign imap_waddr = receive_cnt[15:4] + (receive_cnt[2:1] * 2'b10 + receive_cnt[3]) * 12'hc400;
+assign imap_waddr = receive_cnt[15:4] + (receive_cnt[2:1] * 2'b10 + receive_cnt[3]) * 16'hc400;
 
 // imap_wdata
 assign imap_wdata[63:32] = former_bits;

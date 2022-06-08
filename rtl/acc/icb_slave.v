@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : LKai-Xu
 // Created On    : 2022/06/04 20:50
-// Last Modified : 2022/06/04 22:21
+// Last Modified : 2022/06/09 00:26
 // File Name     : icb_slave.v
 // Description   : icb slave module
 //
@@ -38,7 +38,7 @@ module icb_slave(
     input               icb_rsp_ready,
     output  reg [31:0]  icb_rsp_rdata,
     output              icb_rsp_err,
-    
+
     // clk & rst_n
     input           clk,
     input           rst_n,
@@ -58,7 +58,7 @@ module icb_slave(
     input           conv_finish
 );
 
-assign wire icb_rsp_err = 1'b0;
+assign icb_rsp_err = 1'b0;
 
 // cmd ready, icb_cmd_ready
 always@(posedge clk)
