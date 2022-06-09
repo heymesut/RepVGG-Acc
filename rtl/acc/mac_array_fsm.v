@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/08 10:57
-// Last Modified : 2022/06/08 20:45
+// Last Modified : 2022/06/09 12:34
 // File Name     : mac_array_fsm.v
 // Description   : mac array control
 //
@@ -191,7 +191,7 @@ always @(posedge clk) begin
     setup_cnt <= 6'd0;
   else
     if((state==array_setup) && pipe_en) begin
-      if(setup_cnt==6'd57)
+      if(setup_cnt==6'd58)
         setup_cnt <= 6'd0;
       else
         setup_cnt <= setup_cnt + 1;
