@@ -206,7 +206,7 @@ begin
 end
 
 // imap_waddr
-assign imap_waddr = receive_cnt[15:4] + (receive_cnt[2:1] * 2'b10 + receive_cnt[3]) * 16'hc400;
+assign imap_waddr = receive_cnt[15:4] + (receive_cnt[2:1] * 2'b10 + receive_cnt[3]) * 12'hc40;
 
 // imap_wdata
 assign imap_wdata[63:32] = former_bits;

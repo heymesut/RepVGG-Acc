@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/04 19:34
-// Last Modified : 2022/06/09 00:40
+// Last Modified : 2022/06/09 22:09
 // File Name     : weight_biu.v
 // Description   : weights bus interface unit
 //
@@ -143,7 +143,7 @@ begin
                     end
             2'b01:  begin
                         if(cnt == 8'h8f & arb2weight_biu_vld & arb2weight_biu_rdy) begin
-                            weight_biu2arb_addr <= weight1_base_addr + weight_och_cnt * 8'h010;
+                            weight_biu2arb_addr <= weight1_base_addr + weight_och_cnt * 8'h10;
                         end
                         else if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
                             weight_biu2arb_addr <= weight_biu2arb_addr + 4'h4;

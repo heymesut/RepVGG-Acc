@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/08 10:57
-// Last Modified : 2022/06/09 16:05
+// Last Modified : 2022/06/09 22:16
 // File Name     : mac_array_fsm.v
 // Description   : mac array control
 //
@@ -28,7 +28,7 @@ output reg [7:0]              out_ch_cnt,
 output reg                    in_ch_cnt,
 
 output                        mac_array2psum_acc_vld,
-output                        conv_done,
+output reg                    conv_done,
 
 output                        pipe_en,
 output     [9:0]              pe_en,

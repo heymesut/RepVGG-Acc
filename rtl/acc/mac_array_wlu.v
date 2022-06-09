@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/08 16:23
-// Last Modified : 2022/06/08 17:22
+// Last Modified : 2022/06/09 22:07
 // File Name     : mac_array_wlu.v
 // Description   : mac array weights load unit
 //
@@ -40,7 +40,7 @@ output [1:0]                          weight_load_sel
 
 genvar i;
 generate
-  for(i=0; i<(`ARRAY_NUM/4); i++) begin
+  for(i=0; i<(`ARRAY_NUM/4); i=i+1) begin: weight_load_gen
      assign weight_load[i*32+:32] = (weight_waddr[2:0]==i) ? weight_wdata : 32'b0;
   end
 endgenerate
@@ -53,7 +53,7 @@ assign weight_load_en_base[8:0] = weight_waddr[31] ? 9'b0 : (1<<weight_waddr[9:6
 
 genvar j;
 generate
-  for(j=0; j<(`ARRAY_NUM/4); j++) begin
+  for(j=0; j<(`ARRAY_NUM/4); j=j+1) begin: weight_load_en_gen
      assign weight_load_en[(j*4)*10+:10] = (weight_waddr[2:0]==j) ? weight_load_en_base : 10'b0;
      assign weight_load_en[(j*4+1)*10+:10] = (weight_waddr[2:0]==j) ? weight_load_en_base : 10'b0;
      assign weight_load_en[(j*4+2)*10+:10] = (weight_waddr[2:0]==j) ? weight_load_en_base : 10'b0;

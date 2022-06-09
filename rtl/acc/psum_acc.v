@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/04 20:55
-// Last Modified : 2022/06/09 21:32
+// Last Modified : 2022/06/09 22:08
 // File Name     : psum_acc.v
 // Description   : psum accumulator unit with psum buffer
 //
@@ -32,6 +32,9 @@ output                      psum_acc2map_merger_vld,
 input                       psum_acc2map_merger_rdy
 );
 
+reg  psum_acc_vld_out;
+wire psum_acc_rdy_out;
+wire [63:0] psum_acc_data_out;
 
 // input handshake
 wire psum_acc_vld_in = mac_array2psum_acc_vld;
@@ -78,9 +81,7 @@ sram_32kb_4kx64 psum_sram_buf (
 );
 
 // output pipe stage
-reg  psum_acc_vld_out;
-wire psum_acc_rdy_out;
-wire [63:0] psum_acc_data_out;
+
 
 sirv_gnrl_pipe_stage #(
   .CUT_READY(0),

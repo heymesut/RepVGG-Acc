@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/04 21:36
-// Last Modified : 2022/06/09 01:12
+// Last Modified : 2022/06/09 22:15
 // File Name     : main_fsm.v
 // Description   : accelerator main fsm
 //
@@ -27,16 +27,16 @@ input  [15:0]          map_size,
 
 // control signal
 input                  acc_start,
-output                 acc_done,
+output reg             acc_done,
 
-output                 weight_start,
+output reg             weight_start,
 output [7:0]           weight_och_cnt,
 input                  weight_done,
 
-output                 imap_start,
+output reg             imap_start,
 input                  imap_done,
 
-output                 conv_start,
+output reg             conv_start,
 input                  conv_done,
 
 input  [7:0]           out_ch_cnt

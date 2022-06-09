@@ -1,4 +1,5 @@
 
+`ifdef SYNC
 module sram_top
 #(
   parameter DW = 64,
@@ -62,4 +63,5 @@ module sram_top
 
 endmodule
 
+`endif
 

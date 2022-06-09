@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/04 21:43
-// Last Modified : 2022/06/05 15:00
+// Last Modified : 2022/06/09 22:14
 // File Name     : icb_master.v
 // Description   : icb master interface with an arbiter
 //
@@ -27,7 +27,7 @@ input                           weight_biu2arb_vld,
 output  wire                    weight_biu2arb_rdy,
 
 // weight biu to arbiter rsp signal
-output  [31:0]                  arb2weight_biu_addr,
+output  reg [31:0]                  arb2weight_biu_addr,
 output  [31:0]                  arb2weight_biu_data,
 output                          arb2weight_biu_vld,
 input                           arb2weight_biu_rdy,
@@ -39,7 +39,7 @@ input                           imap_biu2arb_vld,
 output                          imap_biu2arb_rdy,
 
 // imap biu to arbiter rsp signal
-output  [31:0]                  arb2imap_biu_addr,
+output  reg [31:0]                  arb2imap_biu_addr,
 output  [31:0]                  arb2imap_biu_data,
 output                          arb2imap_biu_vld,
 input                           arb2imap_biu_rdy,
@@ -136,6 +136,7 @@ end
 
 // fifo
 // fifo stores the addr of weight/input
+integer i;
 always@(posedge clk)
 begin
     if(!rst_n) begin
