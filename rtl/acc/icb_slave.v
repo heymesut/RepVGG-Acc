@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : LKai-Xu
 // Created On    : 2022/06/04 20:50
-// Last Modified : 2022/06/09 00:26
+// Last Modified : 2022/06/09 17:10
 // File Name     : icb_slave.v
 // Description   : icb slave module
 //
@@ -55,7 +55,7 @@ module icb_slave(
     output  reg [31:0]  DONE,
 
     // finish signal from main_FSM
-    input           conv_finish
+    input           acc_done
 );
 
 assign icb_rsp_err = 1'b0;
@@ -144,7 +144,7 @@ begin
         if(icb_cmd_valid & icb_rsp_ready & !icb_cmd_read & (icb_cmd_addr == `DONE_ADDR)) begin
             DONE <= icb_cmd_wdata;
         end
-        else if (conv_finish) begin
+        else if (acc_done) begin
             DONE <= 32'h1;
         end
         else begin
