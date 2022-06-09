@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/05 15:43
-// Last Modified : 2022/06/08 09:13
+// Last Modified : 2022/06/09 11:44
 // File Name     : basic_pe.v
 // Description   : basic multiplication unit, including an 8-bit imap register,
 //                 a multiplier and four 8-bit weight buffers
@@ -30,9 +30,9 @@ input  [1:0]                       weight_load_sel,
 
 input  [1:0]                       weight_sel,
 input signed [7:0]                 imap_in,
-output [7:0]                       imap_out,
+output signed [7:0]                       imap_out,
 
-output [15:0]                      product
+output signed [15:0]                      product
 );
 
 // imap shift register

@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/06 00:26
-// Last Modified : 2022/06/06 10:34
+// Last Modified : 2022/06/09 11:43
 // File Name     : adder_tree_ich.v
 // Description   : adder tree for ich accumulation
 //
@@ -29,7 +29,7 @@ input  [IN_WIDTH*32-1:0]    psum_ch,
 output [PSUM_WIDTH-1:0]               psum
 );
 
-wire [PSUM_WIDTH-1:0] psum_s1 [15:0];
+wire signed [PSUM_WIDTH-1:0] psum_s1 [15:0];
 wire [PSUM_WIDTH-1:0] psum_s2 [7:0];
 wire [PSUM_WIDTH-1:0] psum_s3 [3:0];
 wire [PSUM_WIDTH-1:0] psum_s4 [1:0];

@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/05 23:37
-// Last Modified : 2022/06/08 09:14
+// Last Modified : 2022/06/09 11:43
 // File Name     : adder_tree_3x3.v
 // Description   : adder tree in 3x3 systolic array
 //
@@ -21,11 +21,11 @@ input                     clk,
 input                     rst_n,
 
 input                     pipe_en,
-input  [9*16-1:0]         product_3x3,
+input  signed [9*16-1:0]         product_3x3,
 output [31:0]             psum_3x3
 );
 
-wire [31:0] psum_s1 [3:0];
+wire signed [31:0] psum_s1 [3:0];
 wire [31:0] psum_s2 [1:0];
 wire [31:0] psum_s3;
 wire [31:0] psum_s4;
