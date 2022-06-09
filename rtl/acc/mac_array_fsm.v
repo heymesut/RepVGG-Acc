@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/08 10:57
-// Last Modified : 2022/06/09 12:34
+// Last Modified : 2022/06/09 16:05
 // File Name     : mac_array_fsm.v
 // Description   : mac array control
 //
@@ -27,7 +27,6 @@ input                         mac_array2psum_acc_rdy,
 output reg [7:0]              out_ch_cnt,
 output reg                    in_ch_cnt,
 
-output reg                    omap_write_req,
 output                        mac_array2psum_acc_vld,
 output                        conv_done,
 
@@ -314,27 +313,13 @@ always @(posedge clk) begin
     if(conv_done == 1'b1)
       conv_done <= 1'b0;
     else
-      if(state==conv_s8 && next_state==idle)
+      if(state==array_cool_down && next_state==idle)
         conv_done <= 1'b1;
       else
         conv_done <= conv_done;
 end
 
-// omap_write_req
-// when conv_start is triggered, set req; when conv_done is triggered, reset
-// req
-always @(posedge clk) begin
-  if(!rst_n)
-    omap_write_req <= 1'b0;
-  else
-    if(conv_start)
-      omap_write_req <= 1'b1;
-    else
-      if(conv_done)
-        omap_write_req <= 1'b0;
-      else
-        omap_write_req <= omap_write_req;
-end
+
 
 
 // mac_array2psum_acc_vld
