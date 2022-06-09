@@ -8,7 +8,7 @@ package refmodel_pkg;
 
     class refmodel;
         string name;
-        mailbox #(conv_data) gen2ref;
+        mailbox #(convdata) gen2ref;
         mailbox #(output_data) ref2scb;
         convdata conv_data;
 
