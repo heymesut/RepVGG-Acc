@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/04 21:34
-// Last Modified : 2022/06/09 17:10
+// Last Modified : 2022/06/09 21:42
 // File Name     : repvgg_acc_top.v
 // Description   : RepVGG accelerator top module
 //
@@ -16,6 +16,7 @@
 `timescale 1ns/1ps
 
 `define ARRAY_NUM 32
+//`define SYNC
 
 module repvgg_acc_top
 (

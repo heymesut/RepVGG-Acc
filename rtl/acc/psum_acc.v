@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/04 20:55
-// Last Modified : 2022/06/09 12:34
+// Last Modified : 2022/06/09 21:32
 // File Name     : psum_acc.v
 // Description   : psum accumulator unit with psum buffer
 //
@@ -67,13 +67,7 @@ assign psum_acc_data_out[55:32] = data_d[55:32] + sram_dout[55:32];
 assign psum_acc_data_out[63:56] = identity_sel_d ? data_d[63:56] : sram_dout[63:56];
 
 // psum buffer
-sirv_sim_ram #(
-  .DP(4096),
-  .FORCE_X2ZERO(0),
-  .DW(64),
-  .MW(8),
-  .AW(12)
-) psum_sram_buf (
+sram_32kb_4kx64 psum_sram_buf (
   .clk(clk),
   .din(psum_acc_data_in),
   .addr(sram_addr),

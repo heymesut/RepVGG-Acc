@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/04 20:50
-// Last Modified : 2022/06/09 09:51
+// Last Modified : 2022/06/09 21:29
 // File Name     : imap_buf.v
 // Description   : input feature map buffer with 7 SRAMs
 //
@@ -66,13 +66,7 @@ generate
                            (sram_raddr[1][11:0] & {12{(sram_raddr[1][14:12]==i) & (imap_ren)}}) |
                            (sram_raddr[2][11:0] & {12{(sram_raddr[2][14:12]==i) & (imap_ren)}}) |
                            (sram_raddr[3][11:0] & {12{(sram_raddr[3][14:12]==i) & (imap_ren)}}));
-    sirv_sim_ram #(
-      .DP(4096),
-      .FORCE_X2ZERO(0),
-      .DW(64),
-      .MW(8),
-      .AW(12)
-    ) imap_sram_buf (
+    sram_32kb_4kx64 imap_sram_buf (
       .clk(clk),
       .din(imap_wdata),
       .addr(sram_addr[i]),
