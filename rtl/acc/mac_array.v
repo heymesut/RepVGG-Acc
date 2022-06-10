@@ -68,6 +68,7 @@ wire [7:0]                      identity                    ;
 wire                            in_ch_cnt                   ;
 //End of automatic wire
 assign mac_array2psum_acc_data = {identity, psum_1x1, psum_3x3};
+assign imap_in = imap_rdata;
 
 mac_array_core mac_array_core_u(
 /*autoinst*/
