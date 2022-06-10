@@ -20,6 +20,9 @@ install:
 	mkdir -p ${SIM_DIR}/install/tb
 	cp ${SIM_DIR}/../tb/*.v ${SIM_DIR}/install/tb -rf
 	cp ${SIM_DIR}/../rtl/${core_name} ${SIM_DIR}/install/rtl -rf
+	cp ${SIM_DIR}/../rtl/acc ${SIM_DIR}/install/rtl -rf
+	rm ${SIM_DIR}/install/rtl/acc/gnrl_modules.v
+	rm ${SIM_DIR}/install/rtl/README.md
 
 ${RUN_DIR}:
 	mkdir -p ${RUN_DIR}
