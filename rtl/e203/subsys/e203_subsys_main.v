@@ -454,6 +454,18 @@ module e203_subsys_main(
   wire                         mem_icb_rsp_ready;
   wire                         mem_icb_rsp_err  ;
   wire [`E203_XLEN-1:0]        mem_icb_rsp_rdata;
+  
+  wire                         cpu_mem_icb_cmd_valid;
+  wire                         cpu_mem_icb_cmd_ready;
+  wire [`E203_ADDR_SIZE-1:0]   cpu_mem_icb_cmd_addr; 
+  wire                         cpu_mem_icb_cmd_read; 
+  wire [`E203_XLEN-1:0]        cpu_mem_icb_cmd_wdata;
+  wire [`E203_XLEN/8-1:0]      cpu_mem_icb_cmd_wmask;
+  
+  wire                         cpu_mem_icb_rsp_valid;
+  wire                         cpu_mem_icb_rsp_ready;
+  wire                         cpu_mem_icb_rsp_err  ;
+  wire [`E203_XLEN-1:0]        cpu_mem_icb_rsp_rdata;
 
   wire  plic_ext_irq;
   wire  clint_sft_irq;
@@ -599,22 +611,203 @@ module e203_subsys_main(
     .fio_icb_rsp_err       (fio_icb_rsp_err  ),
     .fio_icb_rsp_rdata     (fio_icb_rsp_rdata),
 
-    .mem_icb_cmd_valid  (mem_icb_cmd_valid),
-    .mem_icb_cmd_ready  (mem_icb_cmd_ready),
-    .mem_icb_cmd_addr   (mem_icb_cmd_addr ),
-    .mem_icb_cmd_read   (mem_icb_cmd_read ),
-    .mem_icb_cmd_wdata  (mem_icb_cmd_wdata),
-    .mem_icb_cmd_wmask  (mem_icb_cmd_wmask),
+    .mem_icb_cmd_valid  (cpu_mem_icb_cmd_valid),
+    .mem_icb_cmd_ready  (cpu_mem_icb_cmd_ready),
+    .mem_icb_cmd_addr   (cpu_mem_icb_cmd_addr ),
+    .mem_icb_cmd_read   (cpu_mem_icb_cmd_read ),
+    .mem_icb_cmd_wdata  (cpu_mem_icb_cmd_wdata),
+    .mem_icb_cmd_wmask  (cpu_mem_icb_cmd_wmask),
     
-    .mem_icb_rsp_valid  (mem_icb_rsp_valid),
-    .mem_icb_rsp_ready  (mem_icb_rsp_ready),
-    .mem_icb_rsp_err    (mem_icb_rsp_err  ),
-    .mem_icb_rsp_rdata  (mem_icb_rsp_rdata),
+    .mem_icb_rsp_valid  (cpu_mem_icb_rsp_valid),
+    .mem_icb_rsp_ready  (cpu_mem_icb_rsp_ready),
+    .mem_icb_rsp_err    (cpu_mem_icb_rsp_err  ),
+    .mem_icb_rsp_rdata  (cpu_mem_icb_rsp_rdata),
 
     .test_mode     (test_mode), 
     .clk           (hfclk  ),
     .rst_n         (core_rst_n) 
   );
+
+
+  wire                         acc_cfg_icb_cmd_valid;
+  wire                         acc_cfg_icb_cmd_ready;
+  wire [`E203_ADDR_SIZE-1:0]   acc_cfg_icb_cmd_addr;
+  wire                         acc_cfg_icb_cmd_read;
+  wire [`E203_XLEN-1:0]        acc_cfg_icb_cmd_wdata;
+  wire [`E203_XLEN/8-1:0]      acc_cfg_icb_cmd_wmask;
+  
+  wire                         acc_cfg_icb_rsp_valid;
+  wire                         acc_cfg_icb_rsp_ready;
+  wire                         acc_cfg_icb_rsp_err;
+  wire  [`E203_XLEN-1:0]       acc_cfg_icb_rsp_rdata;
+  
+  wire                         acc_mem_icb_cmd_valid;
+  wire                         acc_mem_icb_cmd_ready;
+  wire [`E203_ADDR_SIZE-1:0]   acc_mem_icb_cmd_addr;
+  wire                         acc_mem_icb_cmd_read;
+  wire [`E203_XLEN-1:0]        acc_mem_icb_cmd_wdata;
+  wire [`E203_XLEN/8-1:0]      acc_mem_icb_cmd_wmask;
+  
+  wire                         acc_mem_icb_rsp_valid;
+  wire                         acc_mem_icb_rsp_ready;
+  wire                         acc_mem_icb_rsp_err;
+  wire  [`E203_XLEN-1:0]       acc_mem_icb_rsp_rdata;
+  
+  repvgg_acc_top u_repvgg_acc_top (
+    .clk(hfclk),
+    .rst_n(per_rst_n),
+  
+    .icb_cmd_valid(acc_cfg_icb_cmd_valid),
+    .icb_cmd_ready(acc_cfg_icb_cmd_ready),
+    .icb_cmd_read(acc_cfg_icb_cmd_read),
+    .icb_cmd_addr(acc_cfg_icb_cmd_addr),
+    .icb_cmd_wdata(acc_cfg_icb_cmd_wdata),
+    .icb_cmd_wmask(acc_cfg_icb_cmd_wmask),
+
+    .icb_rsp_valid(acc_cfg_icb_rsp_valid),
+    .icb_rsp_ready(acc_cfg_icb_rsp_ready),
+    .icb_rsp_rdata(acc_cfg_icb_rsp_rdata),
+    .icb_rsp_err(acc_cfg_icb_rsp_err),
+  
+    .acc_icb_cmd_valid(acc_mem_icb_cmd_valid),
+    .acc_icb_cmd_ready(acc_mem_icb_cmd_ready),
+    .acc_icb_cmd_read(acc_mem_icb_cmd_read),
+    .acc_icb_cmd_addr(acc_mem_icb_cmd_addr),
+    .acc_icb_cmd_wdata(acc_mem_icb_cmd_wdata),
+    .acc_icb_cmd_wmask(acc_mem_icb_cmd_wmask),
+
+    .acc_icb_rsp_valid(acc_mem_icb_rsp_valid),
+    .acc_icb_rsp_ready(acc_mem_icb_rsp_ready),
+    .acc_icb_rsp_rdata(acc_mem_icb_rsp_rdata),
+    .acc_icb_rsp_err(acc_mem_icb_rsp_err)
+  );
+
+  wire [1:0] arbt_bus_icb_cmd_valid;
+  wire [1:0] arbt_bus_icb_cmd_ready;
+  wire [2*`E203_ADDR_SIZE-1:0] arbt_bus_icb_cmd_addr;
+  wire [1:0] arbt_bus_icb_cmd_read;
+  wire [2*`E203_XLEN-1:0] arbt_bus_icb_cmd_wdata;
+  wire [2*`E203_XLEN/8-1:0] arbt_bus_icb_cmd_wmask;
+
+  wire [1:0] arbt_bus_icb_rsp_valid;
+  wire [1:0] arbt_bus_icb_rsp_ready;
+  wire [1:0] arbt_bus_icb_rsp_err;
+  wire [2*`E203_XLEN-1:0] arbt_bus_icb_rsp_rdata;
+
+  // CMD Channel
+  // The acc take higher priority
+  assign arbt_bus_icb_cmd_valid =
+      
+                           {
+                             cpu_mem_icb_cmd_valid,
+                             acc_mem_icb_cmd_valid
+                           } ;
+
+  assign arbt_bus_icb_cmd_addr =
+                           {
+                             cpu_mem_icb_cmd_addr,
+                             acc_mem_icb_cmd_addr
+                           } ;
+
+  assign arbt_bus_icb_cmd_read =
+                           {
+                             cpu_mem_icb_cmd_read,
+                             acc_mem_icb_cmd_read
+                           } ;
+
+  assign arbt_bus_icb_cmd_wdata =
+                           {
+                             cpu_mem_icb_cmd_wdata,
+                             acc_mem_icb_cmd_wdata
+                           } ;
+
+  assign arbt_bus_icb_cmd_wmask =
+                           {
+                             cpu_mem_icb_cmd_wmask,
+                             acc_mem_icb_cmd_wmask
+                           } ;
+
+  assign                   {
+                             cpu_mem_icb_cmd_ready,
+                             acc_mem_icb_cmd_ready
+                           } = arbt_bus_icb_cmd_ready;
+
+  //RSP Channel
+  assign                   {
+                             cpu_mem_icb_rsp_valid,
+                             acc_mem_icb_rsp_valid
+                           } = arbt_bus_icb_rsp_valid;
+
+  assign                   {
+                             cpu_mem_icb_rsp_err,
+                             acc_mem_icb_rsp_err
+                           } = arbt_bus_icb_rsp_err;
+                           
+  assign                   {
+                             cpu_mem_icb_rsp_rdata,
+                             acc_mem_icb_rsp_rdata
+                           } = arbt_bus_icb_rsp_rdata;
+
+  assign arbt_bus_icb_rsp_ready = {
+                             cpu_mem_icb_rsp_ready,
+                             acc_mem_icb_rsp_ready
+                           };
+
+  sirv_gnrl_icb_arbt # (
+  .ARBT_SCHEME (0),// Priority based
+  .ALLOW_0CYCL_RSP (0),
+  .FIFO_OUTS_NUM   (8),
+  .FIFO_CUT_READY  (0),
+  .ARBT_NUM   (2),
+  .ARBT_PTR_W (1),
+  .USR_W      (1),
+  .AW         (`E203_ADDR_SIZE),
+  .DW         (`E203_XLEN) 
+  ) u_biu_icb_arbt(
+  .o_icb_cmd_valid        (mem_icb_cmd_valid )     ,
+  .o_icb_cmd_ready        (mem_icb_cmd_ready )     ,
+  .o_icb_cmd_read         (mem_icb_cmd_read )      ,
+  .o_icb_cmd_addr         (mem_icb_cmd_addr )      ,
+  .o_icb_cmd_wdata        (mem_icb_cmd_wdata )     ,
+  .o_icb_cmd_wmask        (mem_icb_cmd_wmask)      ,
+  .o_icb_cmd_burst        ()     ,
+  .o_icb_cmd_beat         ()     ,
+  .o_icb_cmd_excl         ()     ,
+  .o_icb_cmd_lock         ()     ,
+  .o_icb_cmd_size         ()     ,
+  .o_icb_cmd_usr          ()     ,
+                                
+  .o_icb_rsp_valid        (mem_icb_rsp_valid )     ,
+  .o_icb_rsp_ready        (mem_icb_rsp_ready )     ,
+  .o_icb_rsp_err          (mem_icb_rsp_err)        ,
+  .o_icb_rsp_excl_ok      (1'b0)    ,
+  .o_icb_rsp_rdata        (mem_icb_rsp_rdata )     ,
+  .o_icb_rsp_usr          (1'b0   )     ,
+                               
+  .i_bus_icb_cmd_ready    (arbt_bus_icb_cmd_ready ) ,
+  .i_bus_icb_cmd_valid    (arbt_bus_icb_cmd_valid ) ,
+  .i_bus_icb_cmd_read     (arbt_bus_icb_cmd_read )  ,
+  .i_bus_icb_cmd_addr     (arbt_bus_icb_cmd_addr )  ,
+  .i_bus_icb_cmd_wdata    (arbt_bus_icb_cmd_wdata ) ,
+  .i_bus_icb_cmd_wmask    (arbt_bus_icb_cmd_wmask)  ,
+  .i_bus_icb_cmd_burst    (4'b0),
+  .i_bus_icb_cmd_beat     (4'b0 ),
+  .i_bus_icb_cmd_excl     (2'b0 ),
+  .i_bus_icb_cmd_lock     (2'b0 ),
+  .i_bus_icb_cmd_size     (4'b0 ),
+  .i_bus_icb_cmd_usr      (2'b10 ),
+                                
+  .i_bus_icb_rsp_valid    (arbt_bus_icb_rsp_valid ) ,
+  .i_bus_icb_rsp_ready    (arbt_bus_icb_rsp_ready ) ,
+  .i_bus_icb_rsp_err      (arbt_bus_icb_rsp_err)    ,
+  .i_bus_icb_rsp_excl_ok  (),
+  .i_bus_icb_rsp_rdata    (arbt_bus_icb_rsp_rdata ) ,
+  .i_bus_icb_rsp_usr      () ,
+                             
+  .clk                    (hfclk  )                     ,
+  .rst_n                  (per_rst_n)
+  );
+
 
   wire  qspi0_irq; 
   wire  qspi1_irq;
@@ -736,6 +929,17 @@ e203_subsys_clint u_e203_subsys_clint(
     .ppi_icb_rsp_err       (ppi_icb_rsp_err  ),
     .ppi_icb_rsp_rdata     (ppi_icb_rsp_rdata),
 
+    .acc_cfg_icb_cmd_valid  (acc_cfg_icb_cmd_valid),
+    .acc_cfg_icb_cmd_ready  (acc_cfg_icb_cmd_ready),
+    .acc_cfg_icb_cmd_addr   (acc_cfg_icb_cmd_addr ), 
+    .acc_cfg_icb_cmd_read   (acc_cfg_icb_cmd_read ), 
+    .acc_cfg_icb_cmd_wdata  (acc_cfg_icb_cmd_wdata),
+    .acc_cfg_icb_cmd_wmask  (acc_cfg_icb_cmd_wmask),
+                                                
+    .acc_cfg_icb_rsp_valid  (acc_cfg_icb_rsp_valid),
+    .acc_cfg_icb_rsp_ready  (acc_cfg_icb_rsp_ready),
+    .acc_cfg_icb_rsp_err    (acc_cfg_icb_rsp_err  ),
+    .acc_cfg_icb_rsp_rdata  (acc_cfg_icb_rsp_rdata),
   
     .sysper_icb_cmd_valid  (sysper_icb_cmd_valid),
     .sysper_icb_cmd_ready  (sysper_icb_cmd_ready),

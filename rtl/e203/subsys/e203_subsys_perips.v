@@ -55,6 +55,19 @@ module e203_subsys_perips(
   input  [`E203_XLEN-1:0]        sysper_icb_rsp_rdata,
 
   //////////////////////////////////////////////////////////
+  output                         acc_cfg_icb_cmd_valid,
+  input                          acc_cfg_icb_cmd_ready,
+  output [`E203_ADDR_SIZE-1:0]   acc_cfg_icb_cmd_addr, 
+  output                         acc_cfg_icb_cmd_read, 
+  output [`E203_XLEN-1:0]        acc_cfg_icb_cmd_wdata,
+  output [`E203_XLEN/8-1:0]      acc_cfg_icb_cmd_wmask,
+  //
+  input                          acc_cfg_icb_rsp_valid,
+  output                         acc_cfg_icb_rsp_ready,
+  input                          acc_cfg_icb_rsp_err,
+  input  [`E203_XLEN-1:0]        acc_cfg_icb_rsp_rdata,
+
+  //////////////////////////////////////////////////////////
   output                         aon_icb_cmd_valid,
   input                          aon_icb_cmd_ready,
   output [`E203_ADDR_SIZE-1:0]   aon_icb_cmd_addr, 
@@ -742,25 +755,25 @@ module e203_subsys_perips(
 
 
    //  *      
-    .o15_icb_enable     (1'b0),
+    .o15_icb_enable     (1'b1),
 
-    .o15_icb_cmd_valid  (),
-    .o15_icb_cmd_ready  (1'b0),
-    .o15_icb_cmd_addr   (),
-    .o15_icb_cmd_read   (),
-    .o15_icb_cmd_wdata  (),
-    .o15_icb_cmd_wmask  (),
+    .o15_icb_cmd_valid  (acc_cfg_icb_cmd_valid),
+    .o15_icb_cmd_ready  (acc_cfg_icb_cmd_ready),
+    .o15_icb_cmd_addr   (acc_cfg_icb_cmd_addr),
+    .o15_icb_cmd_read   (acc_cfg_icb_cmd_read),
+    .o15_icb_cmd_wdata  (acc_cfg_icb_cmd_wdata),
+    .o15_icb_cmd_wmask  (acc_cfg_icb_cmd_wmask),
     .o15_icb_cmd_lock   (),
     .o15_icb_cmd_excl   (),
     .o15_icb_cmd_size   (),
     .o15_icb_cmd_burst  (),
     .o15_icb_cmd_beat   (),
     
-    .o15_icb_rsp_valid  (1'b0),
-    .o15_icb_rsp_ready  (),
-    .o15_icb_rsp_err    (1'b0),
+    .o15_icb_rsp_valid  (acc_cfg_icb_rsp_valid),
+    .o15_icb_rsp_ready  (acc_cfg_icb_rsp_ready),
+    .o15_icb_rsp_err    (acc_cfg_icb_rsp_err),
     .o15_icb_rsp_excl_ok(1'b0),
-    .o15_icb_rsp_rdata  (32'b0),
+    .o15_icb_rsp_rdata  (acc_cfg_icb_rsp_rdata),
 
     .clk           (clk  ),
     .rst_n         (bus_rst_n) 
