@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/09 21:26
-// Last Modified : 2022/06/09 21:28
+// Last Modified : 2022/06/12 16:30
 // File Name     : sram_32k_4kx64.v
 // Description   : sram 32k(4kx64)
 //
@@ -32,18 +32,7 @@ module sram_32kb_4kx64
 );
 
 
-`ifdef SYNC
-sram_top sram_u (
-    .clk   (clk),
-    .din   (din),
-    .addr  (addr),
-    .cs    (cs),
-    .we    (we),
-    .wem   (wem),
-    .dout  (dout)
-);
-`else
-
+`ifdef SIM
 sirv_sim_ram #(
     .FORCE_X2ZERO (FORCE_X2ZERO),
     .DP (DP),
@@ -59,6 +48,18 @@ sirv_sim_ram #(
     .wem   (wem),
     .dout  (dout)
 );
+
+`else
+sram_top sram_u (
+    .clk   (clk),
+    .din   (din),
+    .addr  (addr),
+    .cs    (cs),
+    .we    (we),
+    .wem   (wem),
+    .dout  (dout)
+);
+
 `endif
 
 endmodule

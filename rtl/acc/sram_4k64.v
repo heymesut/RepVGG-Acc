@@ -1,10 +1,10 @@
 
-`ifdef SYNC
+`ifndef SIM
 module sram_top
 #(
   parameter DW = 64,
   parameter MW = 8,
-  parameter AW = 14
+  parameter AW = 12
   ) (
   input   clk,
   input   cs,
@@ -42,7 +42,7 @@ module sram_top
    .Q(dout),
    .SO(so),
    .CLK(clk),
-   .CEN(~cs),
+   .CEN(``~cs),
    .WEN(wen_q),
    .A(addr_d),
    .D(din),
