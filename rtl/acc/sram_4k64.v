@@ -42,7 +42,7 @@ module sram_top
    .Q(dout),
    .SO(so),
    .CLK(clk),
-   .CEN(``~cs),
+   .CEN(~cs),
    .WEN(wen_q),
    .A(addr_d),
    .D(din),
