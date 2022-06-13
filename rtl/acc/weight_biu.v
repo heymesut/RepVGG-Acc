@@ -174,7 +174,7 @@ begin
         if(weight_start) begin
             weight_biu2arb_req <= 1'b1;
         end
-        else if(state == 2'b10 & nextstate == 2'b00) begin
+        else if(receive_cnt == 8'd159 & arb2weight_biu_vld & arb2weight_biu_rdy) begin
             weight_biu2arb_req <= 1'b0;
         end
     end

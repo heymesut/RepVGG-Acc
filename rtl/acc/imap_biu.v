@@ -150,7 +150,7 @@ begin
         if(imap_start) begin
             imap_biu2arb_req <= 1'b1;
         end
-        else if(state == 2'b01 & nextstate == 2'b00) begin
+        else if(receive_cnt == 16'hc3ff & arb2imap_biu_vld & arb2imap_biu_rdy) begin
             imap_biu2arb_req <= 1'b0;
         end
     end
