@@ -41,7 +41,8 @@ N_FATALS = 0
 VCS =	vcs -sverilog -timescale=1ns/1ns \
 	    +acc +vpi \
 	    -CFLAGS -DVCS -LDFLAGS -Wl,-no-as-needed -full64 -cpp g++-4.8 -cc gcc-4.8 \
-	    -fsdb
+	    -fsdb \
+		+define+SIM
 
 SIMV = 	./simv \
 		-l vcs.log \
