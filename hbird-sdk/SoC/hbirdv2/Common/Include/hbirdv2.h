@@ -438,6 +438,21 @@ typedef union{
     unsigned int           Raw;
 } pwm_timer;
 
+/**
+  * @brief ACC Config
+  */
+typedef struct {  /*!< ACC Config Structure */
+    __IOM uint32_t IMAP_ADDR;
+    __IOM uint32_t W3_ADDR;
+    __IOM uint32_t W1_ADDR;
+    __IOM uint32_t OMAP_ADDR;
+    __IOM uint32_t CONTROL;
+    __IOM uint32_t MAP_SIZE;
+    __IOM uint32_t IN_CH;
+    __IOM uint32_t OUT_CH;
+    __IOM uint32_t STATUS;
+} ACC_CFG_TypeDef;
+
 /*@}*/ /* end of group hbird_Peripherals */
 
 
@@ -510,6 +525,7 @@ typedef union{
 #define ONCHIP_ILM_BASE         (0x80000000UL)      /*!< (ILM       ) Base Address */
 #define ONCHIP_DLM_BASE         (0x90000000UL)      /*!< (DLM       ) Base Address */
 #define HBIRD_PERIPH_BASE       (0x10000000UL)      /*!< (Peripheral) Base Address */
+#define SRAM_BASE               (0x40000000UL)      /*!< (SRAM      ) Base Address */
 
 /* Peripheral memory map */
 #define GPIOA_BASE              (HBIRD_PERIPH_BASE + 0x12000)          /*!< (GPIOA) Base Address */
@@ -523,6 +539,8 @@ typedef union{
 #define SPI2_BASE               (HBIRD_PERIPH_BASE + 0x34000)          /*!< (QSPI2) Base Address */
 #define I2C1_BASE               (HBIRD_PERIPH_BASE + 0x35000)          /*!< (I2C1 Master) Base Address */
 #define GPIOB_BASE              (HBIRD_PERIPH_BASE + 0x40000)          /*!< (GPIOB) Base Address */
+#define ACC_CFG_BASE            (HBIRD_PERIPH_BASE + 0x42000)          /*!< (ACC CFG) Base Address */
+
 
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
 
@@ -548,6 +566,7 @@ typedef union{
 #define SPI2                    ((SPI_TypeDef *)  SPI2_BASE)
 #define I2C1                    ((I2C_TypeDef *)  I2C1_BASE)
 #define GPIOB                   ((GPIO_TypeDef *) GPIOB_BASE)
+#define ACC_CFG                 ((ACC_CFG_TypeDef *) ACC_CFG_BASE)
 
 #define GPIOA_REG(offset)       _REG32(GPIOA_BASE, offset)
 #define UART0_REG(offset)       _REG32(UART0_BASE, offset)
@@ -560,10 +579,15 @@ typedef union{
 #define SPI2_REG(offset)        _REG32(SPI2_BASE,  offset)
 #define I2C1_REG(offset)        _REG32(I2C1_BASE,  offset)
 #define GPIOB_REG(offset)       _REG32(GPIOB_BASE, offset)
+#define ACC_CFG_REG(offset)     _REG32(ACC_CFG_BASE, offset)
 
 // Misc
 
 #define NUM_GPIO 32
+
+// SRAM Access
+#define SRAM_READ32(offset)           _REG32(SRAM_BASE, offset)
+#define SRAM_WRITE32(offset, data)    do { _REG32(SRAM_BASE, offset) = data; } while(0)
 
 uint32_t get_cpu_freq();
 void delay_1ms(uint32_t count);

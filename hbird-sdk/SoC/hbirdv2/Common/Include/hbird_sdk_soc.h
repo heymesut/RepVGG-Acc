@@ -12,6 +12,7 @@
 #include "hbirdv2_i2c.h"
 #include "hbirdv2_spi.h"
 #include "hbirdv2_pwm.h"
+#include "hbirdv2_acc_cfg.h"
 
 #ifdef __cplusplus
 }
