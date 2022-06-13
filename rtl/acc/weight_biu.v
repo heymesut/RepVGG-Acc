@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/04 19:34
-// Last Modified : 2022/06/09 22:09
+// Last Modified : 2022/06/13 15:58
 // File Name     : weight_biu.v
 // Description   : weights bus interface unit
 //
@@ -69,12 +69,12 @@ begin
                         end
                     end
             2'b01:  begin
-                        if(cnt == 8'h47 & arb2weight_biu_vld & arb2weight_biu_rdy) begin
+                        if(cnt == 8'd143 & arb2weight_biu_vld & arb2weight_biu_rdy) begin // 3x3 kenel: 64/4 * 9
                             nextstate <= 2'b10;
                         end
                     end
             2'b10:  begin
-                        if(cnt == 8'h07 & arb2weight_biu_vld & arb2weight_biu_rdy) begin
+                        if(cnt == 8'd15 & arb2weight_biu_vld & arb2weight_biu_rdy) begin // 1x1 kelnel: 64/4
                             nextstate <= 2'b00;
                         end
                     end
@@ -105,7 +105,7 @@ begin
     else begin
         case(state)
             2'b01:  begin
-                        if(cnt == 8'h47 & arb2weight_biu_vld & arb2weight_biu_rdy) begin
+                        if(cnt == 8'd143 & arb2weight_biu_vld & arb2weight_biu_rdy) begin
                             cnt <= 8'h0;
                         end
                         else if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
@@ -113,7 +113,7 @@ begin
                         end
                     end
             2'b10:  begin
-                        if(cnt == 8'h07 & arb2weight_biu_vld & arb2weight_biu_rdy) begin
+                        if(cnt == 8'd15 & arb2weight_biu_vld & arb2weight_biu_rdy) begin
                             cnt <= 8'h0;
                         end
                         else if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
@@ -142,7 +142,7 @@ begin
                         end
                     end
             2'b01:  begin
-                        if(cnt == 8'h8f & arb2weight_biu_vld & arb2weight_biu_rdy) begin
+                        if(cnt == 8'd143 & arb2weight_biu_vld & arb2weight_biu_rdy) begin
                             weight_biu2arb_addr <= weight1_base_addr + weight_och_cnt * 8'h10;
                         end
                         else if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
@@ -150,7 +150,7 @@ begin
                         end
                     end
             2'b10:  begin
-                        if(cnt == 8'h0f & arb2weight_biu_vld & arb2weight_biu_rdy) begin
+                        if(cnt == 8'd15 & arb2weight_biu_vld & arb2weight_biu_rdy) begin
                             weight_biu2arb_addr <= 32'h0;
                         end
                         else if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
@@ -206,7 +206,7 @@ begin
         receive_cnt <= 8'b0;
     end
     else begin
-        if(receive_cnt == 8'h9f & arb2weight_biu_vld & arb2weight_biu_rdy) begin
+        if(receive_cnt == 8'd159 & arb2weight_biu_vld & arb2weight_biu_rdy) begin // 1x1 kernel and 3x3 kernel: 64/4*(3*3+1*1)
             receive_cnt <= 8'b0;
         end
         else if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
@@ -223,7 +223,7 @@ begin
         receive_bit_cnt <= 6'b0;
     end
     else begin
-        if(receive_cnt <= 8'h8f) begin
+        if(receive_cnt <= 8'd143) begin
             if(receive_ch_cnt == 4'hf & arb2weight_biu_vld & arb2weight_biu_rdy) begin
                 if(receive_bit_cnt == 4'h8) begin
                     receive_bit_cnt <= 0;
@@ -276,7 +276,7 @@ begin
         if(weight_done == 1'b1) begin
            weight_done <= 1'b0;
         end
-        else if(receive_cnt == 8'h4f & arb2weight_biu_vld & arb2weight_biu_rdy) begin
+        else if(receive_cnt == 8'd159 & arb2weight_biu_vld & arb2weight_biu_rdy) begin
             weight_done <= 1'b1;
         end
     end
