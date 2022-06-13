@@ -34,6 +34,10 @@ output [31:0]      omap_biu2arb_data,
 output             omap_biu2arb_vld,
 input              omap_biu2arb_rdy,
 
+// omap biu to arbiter rsp signal
+input              arb2omap_biu_vld,
+output wire        arb2omap_biu_rdy,
+
 // map merger to omap biu signal
 input  [31:0]      map_merger2omap_biu_data,
 input              map_merger2omap_biu_vld,
@@ -103,7 +107,8 @@ always @(posedge clk) begin
         omap_biu2arb_req <= omap_biu2arb_req;
 end
 
-
+// arb2omap_biu_rdy
+assign arb2omap_biu_rdy = 1'b1;
 
 endmodule
 

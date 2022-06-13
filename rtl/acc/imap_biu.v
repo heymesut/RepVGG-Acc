@@ -35,7 +35,6 @@ output  reg         imap_biu2arb_vld,
 input               imap_biu2arb_rdy,
 
 // imap biu to arbiter rsp signal
-input  [31:0]      arb2imap_biu_addr,
 input  [31:0]      arb2imap_biu_data,
 input              arb2imap_biu_vld,
 output wire        arb2imap_biu_rdy,
@@ -163,11 +162,11 @@ begin
         imap_biu2arb_vld <= 1'b0;
     end
     else begin
-        if(imap_biu2arb_req) begin
-            imap_biu2arb_vld <= 1'b1;
-        end
-        else if(state == 2'b01 & nextstate == 2'b00) begin
+        if(state == 2'b01 & nextstate == 2'b00) begin
             imap_biu2arb_vld <= 1'b0;
+        end
+        else if(imap_biu2arb_req) begin
+            imap_biu2arb_vld <= 1'b1;
         end
     end
 end

@@ -36,7 +36,6 @@ output reg          weight_biu2arb_req,
 input               weight_biu2arb_rdy,
 
 // weight biu to arbiter rsp signal
-input  [31:0]      arb2weight_biu_addr,
 input  [31:0]      arb2weight_biu_data,
 input              arb2weight_biu_vld,
 output wire        arb2weight_biu_rdy,
@@ -187,11 +186,11 @@ begin
         weight_biu2arb_vld <= 1'b0;
     end
     else begin
-        if(weight_biu2arb_req) begin
-            weight_biu2arb_vld <= 1'b1;
-        end
-        else if(state == 2'b10 & nextstate == 2'b00) begin
+        if(state == 2'b10 & nextstate == 2'b00) begin
             weight_biu2arb_vld <= 1'b0;
+        end
+        else if(weight_biu2arb_req) begin
+            weight_biu2arb_vld <= 1'b1;
         end
     end
 end

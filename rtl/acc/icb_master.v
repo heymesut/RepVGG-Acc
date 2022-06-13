@@ -27,7 +27,6 @@ input                           weight_biu2arb_vld,
 output  wire                    weight_biu2arb_rdy,
 
 // weight biu to arbiter rsp signal
-output  reg [31:0]                  arb2weight_biu_addr,
 output  [31:0]                  arb2weight_biu_data,
 output                          arb2weight_biu_vld,
 input                           arb2weight_biu_rdy,
@@ -39,7 +38,6 @@ input                           imap_biu2arb_vld,
 output                          imap_biu2arb_rdy,
 
 // imap biu to arbiter rsp signal
-output  reg [31:0]                  arb2imap_biu_addr,
 output  [31:0]                  arb2imap_biu_data,
 output                          arb2imap_biu_vld,
 input                           arb2imap_biu_rdy,
@@ -50,6 +48,10 @@ input [31:0]                    omap_biu2arb_addr,
 input [31:0]                    omap_biu2arb_data,
 input                           omap_biu2arb_vld,
 output                          omap_biu2arb_rdy,
+
+// omap biu to arbiter rsp signal
+output                          arb2omap_biu_vld,
+input                           arb2omap_biu_rdy,
 
 // icb master interface
 output                          acc_icb_cmd_valid,
@@ -135,18 +137,6 @@ end
 // weight_biu2arb_rdy
 assign weight_biu2arb_rdy = (state == 3'b010) ? 1 : 0;
 
-// weight biu to arbiter rsp signal
-// arb2weight_biu_addr
-always@(posedge clk)
-begin
-    if(!rst_n) begin
-        arb2weight_biu_addr <= 32'b0;
-    end
-    else begin
-        arb2weight_biu_addr <= 32'b0;
-    end
-end
-
 // arb2weight_biu_data
 assign arb2weight_biu_data = (arb2weight_biu_vld & arb2weight_biu_rdy) ? acc_icb_rsp_rdata : 0;
 
@@ -157,18 +147,6 @@ assign arb2weight_biu_vld = (state == 3'b010 & acc_icb_rsp_valid & acc_icb_rsp_r
 // imap_biu2arb_rdy
 assign imap_biu2arb_rdy = (state == 3'b100) ? 1 : 0;
 
-// imap biu to arbiter rsp signal
-// arb2imap_biu_addr
-always@(posedge clk)
-begin
-    if(!rst_n) begin
-        arb2imap_biu_addr <= 32'b0;
-    end
-    else begin
-        arb2imap_biu_addr <= 32'b0;
-    end
-end
-
 // arb2imap_biu_data
 assign arb2imap_biu_data = (arb2imap_biu_vld & arb2imap_biu_rdy) ? acc_icb_rsp_rdata : 0;
 
@@ -178,6 +156,9 @@ assign arb2imap_biu_vld = (state == 3'b100 & acc_icb_rsp_valid & acc_icb_rsp_rea
 // omap biu to arbiter req signal
 // omap_biu2arb_rdy
 assign omap_biu2arb_rdy = (state == 3'b001) ? 1 : 0;
+
+// arb2omap_biu_vld
+assign arb2omap_biu_vld = (state == 3'b001 & acc_icb_rsp_valid & acc_icb_rsp_ready) ? 1 : 0;
 
 // icb master interface
 // acc_icb_cmd_valid
