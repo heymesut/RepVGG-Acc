@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/04 20:00
-// Last Modified : 2022/06/09 22:16
+// Last Modified : 2022/06/13 20:32
 // File Name     : omap_biu.v
 // Description   : output feature map bus interface unit
 //
@@ -92,6 +92,23 @@ sirv_gnrl_pipe_stage #(
 );
 
 
+// receive counter
+reg [19:0] receive_cnt;
+always@(posedge clk)
+begin
+    if(!rst_n) begin
+        receive_cnt <= 20'b0;
+    end
+    else begin
+        if(receive_cnt == 20'd200703 & arb2omap_biu_vld & arb2omap_biu_rdy) begin
+            receive_cnt <= 20'b0;
+        end
+        else if(arb2omap_biu_vld & arb2omap_biu_rdy) begin
+            receive_cnt <= receive_cnt + 1;
+        end
+    end
+end
+
 // omap_biu2arb_req
 // when conv_start is triggered, set req; when the whole omap is transferred, reset req
 always @(posedge clk) begin
@@ -101,7 +118,7 @@ always @(posedge clk) begin
     if(conv_start)
       omap_biu2arb_req <= 1'b1;
     else
-      if(omap_biu2arb_addr==(20'd200703+omap_base_addr))
+      if(receive_cnt == 20'd200703 & arb2omap_biu_vld & arb2omap_biu_rdy)
         omap_biu2arb_req <= 1'b0;
       else
         omap_biu2arb_req <= omap_biu2arb_req;

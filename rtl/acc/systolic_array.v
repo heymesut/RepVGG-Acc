@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/05 16:52
-// Last Modified : 2022/06/06 10:44
+// Last Modified : 2022/06/13 18:18
 // File Name     : systolic_array.v
 // Description   : systolic array, including 3x3 systolic array with adder
 //                 tree, 1x1 conv unit and identity path (#pe is 10)
@@ -56,7 +56,7 @@ generate
       .pipe_en(pipe_en),
 
       .weight_load(weight_load),
-      .weight_load_en(weight_load_en[i0]),
+      .weight_load_en(weight_load_en[8-i0]),
       .weight_load_sel(weight_load_sel),
 
       .weight_sel(weight_sel),
@@ -87,7 +87,7 @@ generate
       .pipe_en(pipe_en),
 
       .weight_load(weight_load),
-      .weight_load_en(weight_load_en[i1+3]),
+      .weight_load_en(weight_load_en[5-i1]),
       .weight_load_sel(weight_load_sel),
 
       .weight_sel(weight_sel),
@@ -118,7 +118,7 @@ generate
       .pipe_en(pipe_en),
 
       .weight_load(weight_load),
-      .weight_load_en(weight_load_en[i2+6]),
+      .weight_load_en(weight_load_en[2-i2]),
       .weight_load_sel(weight_load_sel),
 
       .weight_sel(weight_sel),
