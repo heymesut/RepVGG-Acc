@@ -62,7 +62,7 @@ package driver_pkg;
                 if(element.data_type == 0) begin
                     if(weight_cnt < 36864) begin
                         // receive weight3
-                        weight_ch_cnt = (weight_cnt - (weight_cnt mod 576)) / 576;
+                        weight_ch_cnt = (weight_cnt - (weight_cnt%576)) / 576;
                         weight_position = weight_ch_cnt * 144 + weight_position_cnt * 16 + weight_line_cnt;
                         case(weight_bit_cnt)
                             0: weight3[weight_position][31:24] = element.data;
