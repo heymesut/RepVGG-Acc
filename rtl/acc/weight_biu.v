@@ -69,12 +69,12 @@ begin
                         end
                     end
             2'b01:  begin
-                        if(cnt == 8'd143 & arb2weight_biu_vld & arb2weight_biu_rdy) begin // 3x3 kenel: 64/4 * 9
+                        if(cnt == 8'd143 & weight_biu2arb_vld & weight_biu2arb_rdy) begin // 3x3 kenel: 64/4 * 9
                             nextstate <= 2'b10;
                         end
                     end
             2'b10:  begin
-                        if(cnt == 8'd15 & arb2weight_biu_vld & arb2weight_biu_rdy) begin // 1x1 kelnel: 64/4
+                        if(cnt == 8'd15 & weight_biu2arb_vld & weight_biu2arb_rdy) begin // 1x1 kelnel: 64/4
                             nextstate <= 2'b00;
                         end
                     end
@@ -105,18 +105,18 @@ begin
     else begin
         case(state)
             2'b01:  begin
-                        if(cnt == 8'd143 & arb2weight_biu_vld & arb2weight_biu_rdy) begin
+                        if(cnt == 8'd143 & weight_biu2arb_vld & weight_biu2arb_rdy) begin
                             cnt <= 8'h0;
                         end
-                        else if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
+                        else if(weight_biu2arb_vld & weight_biu2arb_rdy) begin
                             cnt <= cnt+1;
                         end
                     end
             2'b10:  begin
-                        if(cnt == 8'd15 & arb2weight_biu_vld & arb2weight_biu_rdy) begin
+                        if(cnt == 8'd15 & weight_biu2arb_vld & weight_biu2arb_rdy) begin
                             cnt <= 8'h0;
                         end
-                        else if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
+                        else if(weight_biu2arb_vld & weight_biu2arb_rdy) begin
                             cnt <= cnt+1;
                         end
                     end
@@ -142,18 +142,18 @@ begin
                         end
                     end
             2'b01:  begin
-                        if(cnt == 8'd143 & arb2weight_biu_vld & arb2weight_biu_rdy) begin
+                        if(cnt == 8'd143 & weight_biu2arb_vld & weight_biu2arb_rdy) begin
                             weight_biu2arb_addr <= weight1_base_addr + weight_och_cnt * 8'h10;
                         end
-                        else if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
+                        else if(weight_biu2arb_vld & weight_biu2arb_rdy) begin
                             weight_biu2arb_addr <= weight_biu2arb_addr + 4'h4;
                         end
                     end
             2'b10:  begin
-                        if(cnt == 8'd15 & arb2weight_biu_vld & arb2weight_biu_rdy) begin
+                        if(cnt == 8'd15 & weight_biu2arb_vld & weight_biu2arb_rdy) begin
                             weight_biu2arb_addr <= 32'h0;
                         end
-                        else if(arb2weight_biu_vld & arb2weight_biu_rdy) begin
+                        else if(weight_biu2arb_vld & weight_biu2arb_rdy) begin
                             weight_biu2arb_addr <= weight_biu2arb_addr + 4'h4;
                         end
                     end

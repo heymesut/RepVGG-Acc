@@ -67,7 +67,7 @@ begin
                         end
                     end
             2'b01:  begin
-                        if(cnt == 16'hc3ff & arb2imap_biu_vld & arb2imap_biu_rdy) begin
+                        if(cnt == 16'hc3ff & imap_biu2arb_vld & imap_biu2arb_rdy) begin
                             nextstate <= 2'b00;
                         end
                     end
@@ -98,10 +98,10 @@ begin
     else begin
         case(state)
             2'b01:  begin
-                        if(cnt == 16'hc3ff & arb2imap_biu_vld & arb2imap_biu_rdy) begin
+                        if(cnt == 16'hc3ff & imap_biu2arb_vld & imap_biu2arb_rdy) begin
                             cnt <= 16'h0;
                         end
-                        else if(arb2imap_biu_vld & arb2imap_biu_rdy) begin
+                        else if(imap_biu2arb_vld & imap_biu2arb_rdy) begin
                             cnt <= cnt+1;
                         end
                     end
@@ -129,7 +129,7 @@ begin
                         if(cnt == 16'hc3ff) begin
                             imap_biu2arb_addr <= 32'h0;
                         end
-                        else if(arb2imap_biu_vld & arb2imap_biu_rdy) begin
+                        else if(imap_biu2arb_vld & imap_biu2arb_rdy) begin
                             imap_biu2arb_addr <= imap_biu2arb_addr + 4'h4;
                         end
                     end
