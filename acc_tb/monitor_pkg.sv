@@ -7,7 +7,7 @@ package monitor_pkg;
         string name;
         local virtual icb_intf intf;
         mailbox #(output_data) mon2scb;
-        output_data output;
+        output_data out;
 
         function new(string name = "monitor", mailbox #(output_data) mon2scb);
             this.name = name;
@@ -15,7 +15,7 @@ package monitor_pkg;
         endfunction
 
         function void set_interface(virtual icb_intf intf);
-            if(intf == numm)
+            if(intf == null)
                 $error("interface handle is NULL");
             else
                 this.intf = intf;
@@ -25,9 +25,9 @@ package monitor_pkg;
             forever begin
                 @(posedge intf.clk);
                 if(intf.icb_cmd_valid & intf.icb_cmd_ready & !intf.read) begin
-                    output = new();
-                    output.data = intf.icb_cmd_wdata;
-                    mon2scb.put(output);
+                    out = new();
+                    out.data = intf.icb_cmd_wdata;
+                    mon2scb.put(out);
                 end
             end
         endtask

@@ -56,7 +56,6 @@ package driver_pkg;
             int weight_ch_cnt=0;
             int weight_line_cnt=0;
             int imap_cnt=0;
-            int imap_position=0;
             int imap_bit_cnt=0;
             if(gen2drv.num()>0) begin
                 gen2drv.get(element);
