@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : LKai-Xu
 // Created On    : 2022/06/04 20:50
-// Last Modified : 2022/06/09 17:10
+// Last Modified : 2022/06/13 14:13
 // File Name     : icb_slave.v
 // Description   : icb slave module
 //
@@ -15,15 +15,15 @@
 // -FHDR----------------------------------------------------------------------------
 
 
-`define IN_ADDR_ADDR    32'h0000_0000
-`define W3_ADDR_ADDR    32'h0000_0004
-`define W1_ADDR_ADDR    32'h0000_0008
-`define OUT_ADDR_ADDR   32'h0000_000c
-`define START_ADDR      32'h0000_0010
-`define MAPSIZE_ADDR    32'h0000_0014
-`define ICH_ADDR        32'h0000_0018
-`define OCH_ADDR        32'h0000_001c
-`define DONE_ADDR       32'h0000_0020
+`define IN_ADDR_ADDR    12'h000
+`define W3_ADDR_ADDR    12'h4
+`define W1_ADDR_ADDR    12'h8
+`define OUT_ADDR_ADDR   12'hc
+`define START_ADDR      12'h10
+`define MAPSIZE_ADDR    12'h14
+`define ICH_ADDR        12'h18
+`define OCH_ADDR        12'h1c
+`define DONE_ADDR       12'h20
 
 module icb_slave(
     // icb bus
@@ -64,7 +64,7 @@ assign icb_rsp_err = 1'b0;
 always@(posedge clk)
 begin
     if(!rst_n) begin
-        icb_cmd_ready = 1'b0;
+        icb_cmd_ready <= 1'b0;
     end
     else begin
         if(icb_cmd_valid & icb_cmd_ready) begin
@@ -93,7 +93,7 @@ begin
     end
     else begin
         if(icb_cmd_valid & icb_rsp_ready & !icb_cmd_read) begin
-            case(icb_cmd_addr)
+            case(icb_cmd_addr[11:0])
                 `IN_ADDR_ADDR:  IN_ADDR <= icb_cmd_wdata;
                 `W3_ADDR_ADDR:  W3_ADDR <= icb_cmd_wdata;
                 `W1_ADDR_ADDR:  W1_ADDR <= icb_cmd_wdata;
@@ -122,7 +122,7 @@ begin
         START <= 32'h0;
     end
     else begin
-        if(icb_cmd_valid & icb_rsp_ready & !icb_cmd_read & (icb_cmd_addr == `START_ADDR)) begin
+        if(icb_cmd_valid & icb_rsp_ready & !icb_cmd_read & (icb_cmd_addr[11:0] == `START_ADDR)) begin
             START <= icb_cmd_wdata;
         end
         else if(START == 32'h0000_0001) begin
@@ -141,7 +141,7 @@ begin
         DONE <= 32'h0;
     end
     else begin
-        if(icb_cmd_valid & icb_rsp_ready & !icb_cmd_read & (icb_cmd_addr == `DONE_ADDR)) begin
+        if(icb_cmd_valid & icb_rsp_ready & !icb_cmd_read & (icb_cmd_addr[11:0] == `DONE_ADDR)) begin
             DONE <= icb_cmd_wdata;
         end
         else if (acc_done) begin
@@ -163,7 +163,7 @@ begin
         if(icb_cmd_valid & icb_cmd_ready) begin
             icb_rsp_valid <= 1'h1;
         end
-        else if(icb_rsp_valid & icb_cmd_ready) begin
+        else if(icb_rsp_valid & icb_rsp_ready) begin
             icb_rsp_valid <= 1'h0;
         end
         else begin
@@ -180,7 +180,7 @@ begin
     end
     else begin
         if(icb_cmd_valid & icb_rsp_ready & icb_cmd_read) begin
-            case(icb_cmd_addr)
+            case(icb_cmd_addr[11:0])
                 `IN_ADDR_ADDR:  icb_rsp_rdata <= IN_ADDR;
                 `W3_ADDR_ADDR:  icb_rsp_rdata <= W3_ADDR;
                 `W1_ADDR_ADDR:  icb_rsp_rdata <= W1_ADDR;

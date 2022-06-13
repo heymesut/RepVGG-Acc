@@ -352,7 +352,7 @@ module e203_subsys_perips(
   //  * I2C1      : 0x1003 5000 -- 0x1003 5FFF
   //  * GPIOB     : 0x1004 0000 -- 0x1004 0FFF
   //  * Example-AXI      : 0x1004 1000 -- 0x1004 1FFF
-  //  * Reserved         : 0x1004 2000 -- 0x1004 2FFF
+  //  * Acc cfg          : 0x1004 2000 -- 0x1004 2FFF
   //  * SysPer    : 0x1100 0000 -- 0x11FF FFFF
 
   sirv_icb1to16_bus # (
@@ -411,9 +411,9 @@ module e203_subsys_perips(
   .O14_BASE_ADDR       (32'h1004_1000),       
   .O14_BASE_REGION_LSB (12),
   
-  // * Reserved 
+  // * Acc cfg    : 0x1004 2000 -- 0x1004 2FFF
   .O15_BASE_ADDR       (32'h1004_2000),       
-  .O15_BASE_REGION_LSB (3)
+  .O15_BASE_REGION_LSB (12)
 
   )u_sirv_ppi_fab(
 
