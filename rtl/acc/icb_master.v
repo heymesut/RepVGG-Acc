@@ -284,7 +284,7 @@ assign omap_biu2arb_rdy = (state == 3'b001) ? 1 : 0;
 assign acc_icb_cmd_valid = (state == 3'b001) ? (omap_biu2arb_rdy & omap_biu2arb_vld) : ((state == 3'b010) ? (weight_biu2arb_vld & weight_biu2arb_rdy) : ((state == 3'b100) ? (imap_biu2arb_vld & imap_biu2arb_rdy) : 0));
 
 // acc_icb_cmd_addr
-assign acc_icb_cmd_addr = (state == 3'b001) ? omap_biu2arb_addr : ((state == 3'b010) ? weight_biu2arb_addr : ((state == 3'b010) ? imap_biu2arb_addr : 0));
+assign acc_icb_cmd_addr = (state == 3'b001) ? omap_biu2arb_addr : ((state == 3'b010) ? weight_biu2arb_addr : ((state == 3'b100) ? imap_biu2arb_addr : 0));
 
 // acc_icb_cmd_read
 assign acc_icb_cmd_read = (state == 3'b010 | state == 3'b100) ? 1 : 0;
