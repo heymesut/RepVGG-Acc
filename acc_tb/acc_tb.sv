@@ -74,7 +74,7 @@ module tb_top();
         @(posedge rst_n);
         repeat(1) @(posedge clk);
 
-        env = new()
+        env = new();
         env.set_interface(icb_master_intf, icb_slave_intf);
 
         env.run();

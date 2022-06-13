@@ -15,7 +15,7 @@ package generator_pkg;
         int weight_num = 64*64*10;
         int imap_num = 56*56*64;
 
-        function new(string name="generator",mailbox #(apbdata) gen2drv,mailbox #(apbdata) gen2ref);
+        function new(string name="generator",mailbox #(convdata) gen2drv,mailbox #(convdata) gen2ref);
             this.name = name;
             this.gen2drv = gen2drv;
             this.gen2ref = gen2ref;

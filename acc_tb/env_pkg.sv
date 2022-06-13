@@ -28,6 +28,7 @@ package env_pkg;
             this.drv  = new("driver", gen2drv);
             this.refm = new("refmodel", gen2ref, ref2scb);
             this.scb  = new("scoreboard", ref2scb, mon2scb);
+            this.mon  = new("monitor", mon2scb);
         endfunction
 
         function void set_interface(virtual icb_intf intf_master, virtual icb_intf intf_slave);
@@ -58,7 +59,7 @@ package env_pkg;
 
         function new(string name="env_test");
             this.name = name;
-            this.agent = new("env_agent")
+            this.agent = new("env_agent");
         endfunction
 
         function set_interface(virtual icb_intf intf_master, virtual icb_intf intf_slave);
@@ -66,7 +67,7 @@ package env_pkg;
         endfunction
 
         task run();
-            agent.runa();
+            agent.run();
         endtask
 
         task report();

@@ -25,10 +25,10 @@ package refmodel_pkg;
         logic signed [7:0] omap [63:0][56:1][56:1];
         output_data out;
 
-        function new(string name="refmodel", mailbox #(conv_data) gen2ref, mailbox #(output_data) ref2scb);
+        function new(string name="refmodel", mailbox #(convdata) gen2ref, mailbox #(output_data) ref2scb);
             this.name = name;
             this.gen2ref = gen2ref;
-            this.rf2scb = ref2scb;
+            this.ref2scb = ref2scb;
             this.w_och_cnt = 0;
             this.w_ich_cnt = 0;
             this.w_c = 0;
@@ -56,10 +56,10 @@ package refmodel_pkg;
                     end
                 end
             end
-            for(int och=0;ich<64;ich++) begin
+            for(int och=0;och<64;och++) begin
                 for(int row=1;row<57;row++) begin
                     for(int col=1;col<57;col++) begin
-                        omap[ich][row][col] = 0;
+                        omap[och][row][col] = 0;
                     end
                 end
             end

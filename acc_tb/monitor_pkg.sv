@@ -24,7 +24,7 @@ package monitor_pkg;
         task run();
             forever begin
                 @(posedge intf.clk);
-                if(intf.icb_cmd_valid & intf.icb_cmd_ready & !intf.read) begin
+                if(intf.icb_cmd_valid & intf.icb_cmd_ready & !intf.icb_cmd_read) begin
                     out = new();
                     out.data = intf.icb_cmd_wdata;
                     mon2scb.put(out);

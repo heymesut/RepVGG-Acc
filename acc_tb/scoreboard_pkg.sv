@@ -29,11 +29,11 @@ package scoreboard_pkg;
                     end
                     else begin
                         failure_cnt = failure_cnt + 1;
-                        @display("Scoreboard : failed! at %t", $time);
+                        $display("Scoreboard : failed! at %t", $time);
                     end
                 end
                 else if(ref2scb.num()==0 & mon2scb.num()==0) begin
-                    break
+                    break;
                 end
             end
             report();
