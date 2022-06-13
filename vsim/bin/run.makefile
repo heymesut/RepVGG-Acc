@@ -25,7 +25,7 @@ SIM_TOOL      := vcs
 ifeq ($(SIM_TOOL),vcs)
 SIM_OPTIONS   := +v2k -sverilog -q +lint=all,noSVA-NSVU,noVCDE,noUI,noSVA-CE,noSVA-DIU  -debug_access+all -full64 -timescale=1ns/10ps -cpp g++-4.8 -cc gcc-4.8 -LDFLAGS -Wl,-no-as-needed
 SIM_OPTIONS   += +incdir+"${VSRC_DIR}/core/"+"${VSRC_DIR}/perips/"+"${VSRC_DIR}/perips/apb_i2c/"
-SIM_OPTIONS   +=
+SIM_OPTIONS   += +define+SIM
 endif
 ifeq ($(SIM_TOOL),iverilog)
 SIM_OPTIONS   := -o vvp.exec -I "${VSRC_DIR}/core/" -I "${VSRC_DIR}/perips/" -I "${VSRC_DIR}/perips/apb_i2c/" -D DISABLE_SV_ASSERTION=1 -g2005-sv
