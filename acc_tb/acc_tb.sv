@@ -87,38 +87,3 @@ module tb_top();
     end
 
 endmodule
-
-
-
-
-repvgg_acc_top
-(
-input                           clk,
-input                           rst_n,
-
-// icb slave
-input                           icb_cmd_valid,
-output                          icb_cmd_ready,
-input                           icb_cmd_read,
-input       [31:0]              icb_cmd_addr,
-input       [31:0]              icb_cmd_wdata,
-input       [3:0]               icb_cmd_wmask,
-
-output                          icb_rsp_valid,
-input                           icb_rsp_ready,
-output      [31:0]              icb_rsp_rdata,
-output                          icb_rsp_err,
-
-// icb master
-output                          acc_icb_cmd_valid,
-input                           acc_icb_cmd_ready,
-output [31:0]                   acc_icb_cmd_addr,
-output                          acc_icb_cmd_read,
-output [31:0]                   acc_icb_cmd_wdata,
-output [3:0]                    acc_icb_cmd_wmask,
-
-input                           acc_icb_rsp_valid,
-output                          acc_icb_rsp_ready,
-input                           acc_icb_rsp_err  ,
-input  [31:0]                   acc_icb_rsp_rdata
-);
