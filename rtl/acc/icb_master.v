@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/04 21:43
-// Last Modified : 2022/06/09 22:14
+// Last Modified : 2022/06/14 19:29
 // File Name     : icb_master.v
 // Description   : icb master interface with an arbiter
 //
@@ -174,7 +174,7 @@ assign acc_icb_cmd_read = (state == 3'b010 | state == 3'b100) ? 1 : 0;
 assign acc_icb_cmd_wdata = (state == 3'b001) ? omap_biu2arb_data : 0;
 
 // acc_icb_cmd_wmask
-assign acc_icb_cmd_wmask = 4'b0;
+assign acc_icb_cmd_wmask = (state == 3'b001) ? 4'b1111 : 4'b0;
 
 // acc_icb_rsp_ready
 assign acc_icb_rsp_ready = (state == 3'b001 | state == 3'b010 | state == 3'b100) ? 1 : 0;
