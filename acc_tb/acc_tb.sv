@@ -73,12 +73,13 @@ module tb_top();
     initial begin
         @(posedge rst_n);
         repeat(1) @(posedge clk);
-
+        $display("new environment");
         env = new();
         env.set_interface(icb_master_intf, icb_slave_intf);
-
+        $display("environment running");
         env.run();
-        #20_000_000;
+        #20;
+        $display("here");
 
         env.report();
 
