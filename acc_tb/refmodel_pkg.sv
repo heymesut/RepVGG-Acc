@@ -79,22 +79,36 @@ package refmodel_pkg;
             while(gen2ref.try_peek(conv_data)) begin
                 gen2ref.get(conv_data);
                 if(conv_data.data_type == 0) begin
-                    weight3[w_och_cnt][w_ich_cnt][w_r][w_c] = conv_data.data;
-                    w_c ++;
-                    if(w_c == 3) begin
-                        w_c = 0;
-                        w_r ++;
+                    if(weight_cnt < 36864) begin
+                        weight3[w_och_cnt][w_ich_cnt][w_r][w_c] = conv_data.data;
+                        w_c ++;
+                        weight_cnt ++;
+                        if(w_c == 3) begin
+                            w_c = 0;
+                            w_r ++;
+                            if(w_r == 3) begin
+                                w_r = 0;
+                                w_ich_cnt ++;
+                                if(w_ich_cnt == 64) begin
+                                    w_ich_cnt = 0;
+                                    w_och_cnt ++;
+                                    if(w_och_cnt == 64) begin
+                                        w_och_cnt = 0;
+                                    end
+                                end
+                            end
+                        end
                     end
-                    if(w_r == 3) begin
-                        w_r = 0;
+                    else begin
+                        weight1[w_och_cnt][w_ich_cnt] = conv_data.data;
                         w_ich_cnt ++;
-                    end
-                    if(w_ich_cnt == 64) begin
-                        w_ich_cnt = 0;
-                        w_och_cnt ++;
-                    end
-                    if(w_och_cnt == 64) begin
-                        w_och_cnt = 0;
+                        if(w_ich_cnt == 64) begin
+                            w_ich_cnt = 0;
+                            w_och_cnt ++;
+                            if(w_och_cnt == 64) begin
+                                w_och_cnt = 0;
+                            end
+                        end
                     end
                 end
                 else begin
@@ -103,13 +117,13 @@ package refmodel_pkg;
                     if(imap_ch_cnt == 64) begin
                         imap_ch_cnt = 0;
                         imap_col_cnt ++;
-                    end
-                    if(imap_col_cnt == 57) begin
-                        imap_col_cnt = 1;
-                        imap_row_cnt ++;
-                    end
-                    if(imap_row_cnt == 57) begin
-                        imap_row_cnt = 1;
+                        if(imap_col_cnt == 57) begin
+                            imap_col_cnt = 1;
+                            imap_row_cnt ++;
+                            if(imap_row_cnt == 57) begin
+                                imap_row_cnt = 1;
+                            end
+                        end
                     end
                 end
             end
@@ -162,6 +176,9 @@ package refmodel_pkg;
             $display("start getting data");
             get_data();
             $display("perform mac");
+            // $display("weight3 0 is %b", weight3[0][0][0][0]);
+            // $display("weight1 0 is %b", weight1[0][0]);
+            // $display("input 0 is %b", imap[0][1][1]);
             mac();
             $display("send output");
             send_output();

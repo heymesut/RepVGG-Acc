@@ -25,7 +25,7 @@ package scoreboard_pkg;
             forever begin
                 @e_check;
                 if(ref2scb.num()>0 & mon2scb.num()>0) begin
-                    $display("scoreboard comparing");
+                    // $display("scoreboard comparing");
                     ref2scb.get(refout);
                     mon2scb.get(monout);
                     if(refout.data == monout.data) begin

@@ -57,6 +57,7 @@ package driver_pkg;
             int weight_line_cnt=0;
             int imap_cnt=0;
             int imap_bit_cnt=0;
+            integer fd;
             $display("start store data");
             while(gen2drv.num()>0) begin
                 gen2drv.get(element);
@@ -108,6 +109,10 @@ package driver_pkg;
                     end
                 end
                 else if(element.data_type == 1) begin
+                    // fd = $fopen("./generated_data.txt", "a+");
+                    // $fdisplay(fd, "data_type = %h", element.data_type);
+                    // $fdisplay(fd, "data = %h", element.data);
+                    // $fclose(fd);
                     imap_bit_cnt = imap_cnt%4;
                     imap_position = (imap_cnt - imap_bit_cnt) / 4;
                     case(imap_bit_cnt)

@@ -26,7 +26,8 @@ package generator_pkg;
             // generator weights
             for(int i=0;i<weight_num;i++) begin
                 conv_data = new();
-                conv_data.randomize();
+                // conv_data.randomize();
+                conv_data.data=8'b1;
                 conv_data.data_type = 0;
                 gen2drv.put(conv_data);
                 gen2ref.put(conv_data);
@@ -34,7 +35,8 @@ package generator_pkg;
             // generator imap
             for(int i=0;i<imap_num;i++) begin
                 conv_data = new();
-                conv_data.randomize();
+                // conv_data.randomize();
+                conv_data.data=8'b1;
                 conv_data.data_type = 1;
                 gen2drv.put(conv_data);
                 gen2ref.put(conv_data);
