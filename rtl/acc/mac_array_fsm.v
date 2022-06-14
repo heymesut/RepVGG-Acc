@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/08 10:57
-// Last Modified : 2022/06/09 22:16
+// Last Modified : 2022/06/13 21:21
 // File Name     : mac_array_fsm.v
 // Description   : mac array control
 //
@@ -54,6 +54,8 @@ localparam conv_s6         = 4'b1000;
 localparam conv_s7         = 4'b1001;
 localparam conv_s8         = 4'b1010;
 localparam array_cool_down = 4'b1011;
+
+localparam NOCH = 8'd2;
 
 ///////////////////
 //
@@ -153,17 +155,17 @@ always @(*) begin
     end
 
     conv_s8: begin
-      if((conv_col_cnt=='d55) && (conv_row_cnt=='d55) && (out_ch_cnt<'d63) && pipe_en)
+      if((conv_col_cnt=='d55) && (conv_row_cnt=='d55) && (out_ch_cnt<(NOCH-1)) && pipe_en)
         next_state = conv_s0;
       else
-        if((conv_col_cnt=='d55) && (conv_row_cnt=='d55) && (out_ch_cnt=='d63) && pipe_en)
+        if((conv_col_cnt=='d55) && (conv_row_cnt=='d55) && (out_ch_cnt==(NOCH-1)) && pipe_en)
           next_state = array_cool_down;
         else
           next_state = conv_s8;
     end
 
     array_cool_down: begin
-      if((omap_cnt=='d3135) && (omap_ch_cnt=='d127) && pipe_en) // fmap size:  56x56, in_ch: 64/32, out_ch: 64
+      if((omap_cnt=='d3135) && (omap_ch_cnt==(2*NOCH-1)) && pipe_en) // fmap size:  56x56, in_ch: 64/32, out_ch: 64
         next_state = idle;
       else
         next_state = array_cool_down;
@@ -246,7 +248,7 @@ always @(posedge clk) begin
     out_ch_cnt <= 8'd0;
   else
     if((in_ch_cnt==1'b1) && (conv_row_cnt==6'd55) && (conv_col_cnt==6'd55) && array_en && pipe_en)
-      if(out_ch_cnt==8'd63)
+      if(out_ch_cnt==(NOCH-1))
         out_ch_cnt <= 8'd0;
       else
         out_ch_cnt <= out_ch_cnt + 1;
@@ -290,7 +292,7 @@ always @(posedge clk) begin
     omap_ch_cnt <= 7'b0;
   else
     if(mac_array2psum_acc_vld && mac_array2psum_acc_rdy && omap_cnt=='d3135) begin
-      if(omap_ch_cnt=='d127)
+      if(omap_ch_cnt==(2*NOCH-1))
         omap_ch_cnt <= 'd0;
       else
         omap_ch_cnt <= omap_ch_cnt + 1;
