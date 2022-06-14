@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/08 10:57
-// Last Modified : 2022/06/14 09:59
+// Last Modified : 2022/06/14 21:35
 // File Name     : mac_array_fsm.v
 // Description   : mac array control
 //
@@ -89,7 +89,7 @@ always @(*) begin
     end
 
     array_setup: begin
-      if(setup_cnt == 'd57 && pipe_en)
+      if(setup_cnt == 'd58 && pipe_en)
         next_state = conv_s0;
       else
         next_state = array_setup;
