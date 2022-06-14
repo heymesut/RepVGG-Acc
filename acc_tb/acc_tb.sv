@@ -78,7 +78,7 @@ module tb_top();
         env.set_interface(icb_master_intf, icb_slave_intf);
         $display("environment running");
         env.run();
-        #100_000;
+        #570_000;
         $display("here");
 
         env.report();

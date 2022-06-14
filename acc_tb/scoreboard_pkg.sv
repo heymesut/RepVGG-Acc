@@ -34,6 +34,8 @@ package scoreboard_pkg;
                     else begin
                         failure_cnt = failure_cnt + 1;
                         $display("Scoreboard : failed! at %t", $time);
+                        $display("Scoreboard receive %b from refmodel", refout.data);
+                        $display("Scoreboard receive %b from monitor", monout.data);
                     end
                 end
                 else if(ref2scb.num()==0 & mon2scb.num()==0) begin

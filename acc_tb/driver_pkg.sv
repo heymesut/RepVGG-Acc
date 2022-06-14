@@ -57,7 +57,8 @@ package driver_pkg;
             int weight_line_cnt=0;
             int imap_cnt=0;
             int imap_bit_cnt=0;
-            if(gen2drv.num()>0) begin
+            $display("start store data");
+            while(gen2drv.num()>0) begin
                 gen2drv.get(element);
                 if(element.data_type == 0) begin
                     if(weight_cnt < 36864) begin
@@ -86,8 +87,9 @@ package driver_pkg;
                     end
                     else begin
                         // receive weight1
-                        weight_ch_cnt = ((weight_cnt -36864)- ((weight_cnt -36864)%576)) / 64;
+                        weight_ch_cnt = ((weight_cnt -36864)- ((weight_cnt -36864)%64)) / 64;
                         weight_position = weight_ch_cnt * 16 + weight_line_cnt;
+                        // $display("weight position = %d",weight_position);
                         case(weight_bit_cnt)
                             0: weight1[weight_position][31:24] = element.data;
                             1: weight1[weight_position][23:16] = element.data;
@@ -132,18 +134,19 @@ package driver_pkg;
         endtask
 
         task run();
+            store_data();
             acc_initialize();
             forever begin
                 intf_slave.icb_cmd_ready <= 1'b1;
                 intf_slave.icb_rsp_err <= 1'b0;
                 @(posedge intf_slave.clk)
-                if(intf_slave.icb_cmd_ready & intf_slave.icb_cmd_ready) begin
+                if(intf_slave.icb_cmd_ready & intf_slave.icb_cmd_valid) begin
                     if(intf_slave.icb_cmd_read == 1) begin
                         intf_slave.icb_rsp_valid <= 1'b1;
                         case(intf_slave.icb_cmd_addr[31:28])
-                            4'b0000: intf_slave.icb_rsp_rdata <= imap[intf_slave.icb_cmd_addr[27:0]];
-                            4'b0001: intf_slave.icb_rsp_rdata <= weight3[intf_slave.icb_cmd_addr[27:0]];
-                            4'b0010: intf_slave.icb_rsp_rdata <= weight1[intf_slave.icb_cmd_addr[27:0]];
+                            4'b0000: intf_slave.icb_rsp_rdata <= imap[intf_slave.icb_cmd_addr[27:2]];
+                            4'b0001: intf_slave.icb_rsp_rdata <= weight3[intf_slave.icb_cmd_addr[27:2]];
+                            4'b0010: intf_slave.icb_rsp_rdata <= weight1[intf_slave.icb_cmd_addr[27:2]];
                         endcase
                     end
                     else begin
