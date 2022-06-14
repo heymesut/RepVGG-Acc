@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/04 20:00
-// Last Modified : 2022/06/13 20:32
+// Last Modified : 2022/06/14 09:59
 // File Name     : omap_biu.v
 // Description   : output feature map bus interface unit
 //
@@ -25,7 +25,7 @@ input  [7:0]       in_ch,
 input  [7:0]       out_ch,
 input  [15:0]      map_size,
 input  [31:0]      omap_base_addr,
-input              conv_start,
+input              in_ch_cnt,
 
 // omap biu to arbiter req signal
 output reg         omap_biu2arb_req,
@@ -48,9 +48,23 @@ output             map_merger2omap_biu_rdy
 // addr generation
 wire omap_biu_hdshk_in = map_merger2omap_biu_rdy & map_merger2omap_biu_vld;
 
-wire [31:0] omap_biu_addr_out = omap_biu_hdshk_in ?
-                              ((omap_biu2arb_addr==(20'd200703+omap_base_addr)) ?
-                                omap_base_addr : omap_biu2arb_addr+1) : omap_biu2arb_addr;
+reg [19:0] omap_biu2arb_cnt;
+always @(posedge clk) begin
+  if(!rst_n) begin
+    omap_biu2arb_cnt <= 20'b0;
+  end
+  else
+    if(omap_biu_hdshk_in)
+      if(omap_biu2arb_cnt==20'd200703) begin
+        omap_biu2arb_cnt <= 20'b0;
+      end
+      else
+        omap_biu2arb_cnt <= omap_biu2arb_cnt + 1;
+    else
+      omap_biu2arb_cnt <= omap_biu2arb_cnt;
+end
+
+assign omap_biu2arb_addr = omap_base_addr + omap_biu2arb_cnt;
 
 // omap_biu output pipe stage
 wire omap_biu_vld_out  = omap_biu_hdshk_in;
@@ -74,34 +88,16 @@ sirv_gnrl_pipe_stage #(
   .rst_n(rst_n)
 );
 
-sirv_gnrl_pipe_stage #(
-  .CUT_READY(0),
-  .DP(1),
-  .DW(32)
-) omap_biu2arb_addr_pipe_stage(
-  .i_vld(omap_biu_vld_out),
-  .i_rdy(omap_biu_rdy_out),
-  .i_dat(omap_biu_addr_out),
-
-  .o_vld(omap_biu2arb_vld),
-  .o_rdy(omap_biu2arb_rdy),
-  .o_dat(omap_biu2arb_addr),
-
-  .clk(clk),
-  .rst_n(rst_n)
-);
-
-
 // receive counter
-reg [19:0] receive_cnt;
+reg [11:0] receive_cnt;
 always@(posedge clk)
 begin
     if(!rst_n) begin
-        receive_cnt <= 20'b0;
+        receive_cnt <= 12'b0;
     end
     else begin
-        if(receive_cnt == 20'd200703 & arb2omap_biu_vld & arb2omap_biu_rdy) begin
-            receive_cnt <= 20'b0;
+        if(receive_cnt == 12'd3035 & arb2omap_biu_vld & arb2omap_biu_rdy) begin
+            receive_cnt <= 12'b0;
         end
         else if(arb2omap_biu_vld & arb2omap_biu_rdy) begin
             receive_cnt <= receive_cnt + 1;
@@ -110,15 +106,14 @@ begin
 end
 
 // omap_biu2arb_req
-// when conv_start is triggered, set req; when the whole omap is transferred, reset req
 always @(posedge clk) begin
   if(!rst_n)
     omap_biu2arb_req <= 1'b0;
   else
-    if(conv_start)
+    if(in_ch_cnt)
       omap_biu2arb_req <= 1'b1;
     else
-      if(receive_cnt == 20'd200703 & arb2omap_biu_vld & arb2omap_biu_rdy)
+      if(receive_cnt == 12'd3035 & arb2omap_biu_vld & arb2omap_biu_rdy)
         omap_biu2arb_req <= 1'b0;
       else
         omap_biu2arb_req <= omap_biu2arb_req;

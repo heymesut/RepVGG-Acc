@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/08 10:57
-// Last Modified : 2022/06/13 21:21
+// Last Modified : 2022/06/14 09:59
 // File Name     : mac_array_fsm.v
 // Description   : mac array control
 //
@@ -155,10 +155,10 @@ always @(*) begin
     end
 
     conv_s8: begin
-      if((conv_col_cnt=='d55) && (conv_row_cnt=='d55) && (out_ch_cnt<(NOCH-1)) && pipe_en)
+      if((conv_col_cnt=='d55) && (conv_row_cnt=='d55) && (out_ch_cnt<(NOCH-1) || (out_ch_cnt==(NOCH-1) && in_ch_cnt==1'b0)) && pipe_en)
         next_state = conv_s0;
       else
-        if((conv_col_cnt=='d55) && (conv_row_cnt=='d55) && (out_ch_cnt==(NOCH-1)) && pipe_en)
+        if((conv_col_cnt=='d55) && (conv_row_cnt=='d55) && (out_ch_cnt==(NOCH-1)) && (in_ch_cnt==1'b1) && pipe_en)
           next_state = array_cool_down;
         else
           next_state = conv_s8;

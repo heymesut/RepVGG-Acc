@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/04 21:34
-// Last Modified : 2022/06/13 20:34
+// Last Modified : 2022/06/14 09:59
 // File Name     : repvgg_acc_top.v
 // Description   : RepVGG accelerator top module
 //
@@ -96,6 +96,7 @@ input  [31:0]                   acc_icb_rsp_rdata
     wire                        conv_start                      ;
     wire                        conv_done                       ;
     wire [7:0]                  out_ch_cnt                      ;
+    wire                        in_ch_cnt                       ;
     wire [31:0]                 weight_waddr                    ;
     wire [31:0]                 weight_wdata                    ;
     wire                        weight_wen                      ;
@@ -223,6 +224,7 @@ mac_array mac_array_u(
         .conv_start                 (conv_start                       ), //input
         .conv_done                  (conv_done                        ), //output
         .out_ch_cnt                 (out_ch_cnt[7:0]                  ), //output
+        .in_ch_cnt                  (in_ch_cnt                        ), //output
         .in_ch                      (in_ch[7:0]                       ), //input
         .out_ch                     (out_ch[7:0]                      ), //input
         .map_size                   (map_size[15:0]                   ), //input
@@ -271,7 +273,7 @@ omap_biu omap_biu_u(
         .out_ch                      (out_ch[7:0]                       ), //input
         .map_size                    (map_size[15:0]                    ), //input
         .omap_base_addr              (omap_base_addr[31:0]              ), //input
-        .conv_start                  (conv_start                        ), //input
+        .in_ch_cnt                   (in_ch_cnt                         ), //input
         .omap_biu2arb_req            (omap_biu2arb_req                  ), //output
         .omap_biu2arb_addr           (omap_biu2arb_addr[31:0]           ), //output
         .omap_biu2arb_data           (omap_biu2arb_data[31:0]           ), //output

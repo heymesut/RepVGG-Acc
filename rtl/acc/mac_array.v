@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/04 20:04
-// Last Modified : 2022/06/09 16:08
+// Last Modified : 2022/06/14 09:59
 // File Name     : mac_array.v
 // Description   : mac array, including 32 3x3 conv systolic arrays, 32 1x1 conv units and adder tree
 //
@@ -27,6 +27,7 @@ input                  rst_n,
 input                  conv_start,
 output                 conv_done,
 output [7:0]           out_ch_cnt,
+output                 in_ch_cnt,
 input  [7:0]           in_ch,
 input  [7:0]           out_ch,
 input  [15:0]          map_size,
@@ -65,7 +66,6 @@ wire [4:0]                      identity_sel                ;
 wire [31:0]                     psum_3x3                    ;
 wire [23:0]                     psum_1x1                    ;
 wire [7:0]                      identity                    ;
-wire                            in_ch_cnt                   ;
 //End of automatic wire
 assign mac_array2psum_acc_data = {identity, psum_1x1, psum_3x3};
 assign imap_in = imap_rdata;
