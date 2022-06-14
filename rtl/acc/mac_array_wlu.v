@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/08 16:23
-// Last Modified : 2022/06/09 22:07
+// Last Modified : 2022/06/14 22:30
 // File Name     : mac_array_wlu.v
 // Description   : mac array weights load unit
 //
@@ -48,8 +48,8 @@ endgenerate
 
 
 wire [9:0] weight_load_en_base;
-assign weight_load_en_base[9] = weight_waddr[31];
-assign weight_load_en_base[8:0] = weight_waddr[31] ? 9'b0 : (1<<weight_waddr[9:6]);
+assign weight_load_en_base[9] = weight_waddr[31] & weight_wen;
+assign weight_load_en_base[8:0] = (weight_waddr[31] ? 9'b0 : (1<<weight_waddr[9:6])) & {9{weight_wen}};
 
 genvar j;
 generate
