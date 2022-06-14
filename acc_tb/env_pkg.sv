@@ -34,7 +34,7 @@ package env_pkg;
 
         function void set_interface(virtual icb_intf intf_master, virtual icb_intf intf_slave);
             drv.set_interface(intf_master, intf_slave);
-            mon.set_interface(intf_master);
+            mon.set_interface(intf_slave);
         endfunction
 
         task run();
