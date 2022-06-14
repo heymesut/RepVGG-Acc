@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/04 19:47
-// Last Modified : 2022/06/08 21:29
+// Last Modified : 2022/06/14 11:40
 // File Name     : imap_biu.v
 // Description   : input feature map bus interface unit
 //
@@ -165,7 +165,7 @@ begin
         if(cnt == 16'hc3ff & imap_biu2arb_vld & imap_biu2arb_rdy) begin
             imap_biu2arb_vld <= 1'b0;
         end
-        else if(imap_biu2arb_req) begin
+        else if(imap_start) begin
             imap_biu2arb_vld <= 1'b1;
         end
     end

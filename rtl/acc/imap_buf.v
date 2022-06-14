@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/04 20:50
-// Last Modified : 2022/06/09 22:06
+// Last Modified : 2022/06/14 12:28
 // File Name     : imap_buf.v
 // Description   : input feature map buffer with 7 SRAMs
 //
@@ -78,11 +78,16 @@ generate
   end
 endgenerate
 
+
+// delay 1 cycle because sram read need 1 cycle
+wire [6:0] sram_cs_d;
+sirv_gnrl_dffr #(7) sram_cs_d_reg(sram_cs, sram_cs_d, clk, rst_n);
+
 integer m;
 always @(*) begin
   imap_rdata = 0;
   for(m=6; m>=0; m=m-1) begin
-    if(sram_cs[m]) begin
+    if(sram_cs_d[m]) begin
       imap_rdata = (imap_rdata << 64);
       imap_rdata[63:0] = sram_dout[m];
     end

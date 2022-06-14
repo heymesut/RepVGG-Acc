@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/04 19:34
-// Last Modified : 2022/06/13 15:58
+// Last Modified : 2022/06/14 11:39
 // File Name     : weight_biu.v
 // Description   : weights bus interface unit
 //
@@ -189,7 +189,7 @@ begin
         if(state == 2'b10 & cnt == 8'd15 & weight_biu2arb_vld & weight_biu2arb_rdy) begin
             weight_biu2arb_vld <= 1'b0;
         end
-        else if(weight_biu2arb_req) begin
+        else if(weight_start) begin
             weight_biu2arb_vld <= 1'b1;
         end
     end

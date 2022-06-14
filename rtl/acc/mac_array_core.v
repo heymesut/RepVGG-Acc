@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/06 09:04
-// Last Modified : 2022/06/08 09:34
+// Last Modified : 2022/06/14 12:26
 // File Name     : mac_array_core.v
 // Description   : mac array core, including 32 systolic arrays and two adder_tree_ichs
 //
@@ -44,6 +44,10 @@ wire [32*16-1:0] product_1x1_ch;
 wire [7:0]  identity_ch [31:0];
 
 
+// delay 1 cycle because sram read need 1 cycle
+wire pipe_en_d;
+sirv_gnrl_dffr #(1) pipe_en_d_reg(pipe_en, pipe_en_d, clk, rst_n);
+
 // 32 systolic arrays
 genvar i;
 generate
@@ -52,7 +56,7 @@ generate
       .clk(clk),
       .rst_n(rst_n),
 
-      .pipe_en(pipe_en),
+      .pipe_en(pipe_en_d),
       .pe_en(pe_en),
 
       .weight_load(weight_load[i*8+:8]),
@@ -74,7 +78,7 @@ adder_tree_ich #(32, 32) adder_tree_ich_3x3(
   .clk(clk),
   .rst_n(rst_n),
 
-  .pipe_en(pipe_en),
+  .pipe_en(pipe_en_d),
   .psum_ch(psum_3x3_ch),
 
   .psum(psum_3x3)
@@ -85,7 +89,7 @@ adder_tree_ich #(16, 24) adder_tree_ich_1x1(
   .clk(clk),
   .rst_n(rst_n),
 
-  .pipe_en(pipe_en),
+  .pipe_en(pipe_en_d),
   .psum_ch(product_1x1_ch),
 
   .psum(psum_1x1)
@@ -99,7 +103,7 @@ assign identity = identity_d[3];
 genvar k;
 generate
   for(k=0; k<3; k=k+1) begin: identity_delay
-    sirv_gnrl_dfflr #(8) identity_delay_dff(pipe_en, identity_d[k], identity_d[k+1], clk, rst_n);
+    sirv_gnrl_dfflr #(8) identity_delay_dff(pipe_en_d, identity_d[k], identity_d[k+1], clk, rst_n);
   end
 endgenerate
 

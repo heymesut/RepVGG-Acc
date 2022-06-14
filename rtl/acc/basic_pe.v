@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/05 15:43
-// Last Modified : 2022/06/09 12:54
+// Last Modified : 2022/06/14 12:56
 // File Name     : basic_pe.v
 // Description   : basic multiplication unit, including an 8-bit imap register,
 //                 a multiplier and four 8-bit weight buffers
@@ -72,7 +72,8 @@ wire signed [7:0] weight = ({8{weight_buf_ren[0]}} & weight0) |
                     ({8{weight_buf_ren[3]}} & weight3) ;
 
 wire signed [15:0] product_r;
-wire signed [15:0] product_nxt = pe_en ? (weight * imap_r) : 16'b0;
+wire signed [15:0] product_res = $signed(weight) * $signed(imap_r);
+wire signed [15:0] product_nxt = pe_en ? product_res : 16'b0;
 assign product = product_r;
 
 sirv_gnrl_dffr #(16) product_dff (product_nxt, product_r, clk, rst_n);
