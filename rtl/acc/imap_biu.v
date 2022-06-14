@@ -53,7 +53,7 @@ reg [15:0]  receive_cnt;
 reg [31:0]  former_bits;
 
 // FSM nextstate
-always@(posedge clk)
+always@(*)
 begin
     if(!rst_n) begin
         nextstate <= 2'b0;
@@ -125,7 +125,7 @@ begin
                         end
                     end
             2'b01:  begin
-                        if(cnt == 16'hc3ff) begin
+                        if(cnt == 16'hc3ff & imap_biu2arb_vld & imap_biu2arb_rdy) begin
                             imap_biu2arb_addr <= 32'h0;
                         end
                         else if(imap_biu2arb_vld & imap_biu2arb_rdy) begin
@@ -162,7 +162,7 @@ begin
         imap_biu2arb_vld <= 1'b0;
     end
     else begin
-        if(state == 2'b01 & nextstate == 2'b00) begin
+        if(cnt == 16'hc3ff & imap_biu2arb_vld & imap_biu2arb_rdy) begin
             imap_biu2arb_vld <= 1'b0;
         end
         else if(imap_biu2arb_req) begin

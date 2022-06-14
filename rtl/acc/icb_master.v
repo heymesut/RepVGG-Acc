@@ -73,7 +73,7 @@ reg [4:0] input_cnt;
 reg [4:0] output_cnt;
 
 // arbiter FSM nextstate
-always@(posedge clk)
+always@(*)
 begin
     if(!rst_n) begin
         nextstate <= 3'b0;

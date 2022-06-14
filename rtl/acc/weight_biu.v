@@ -55,7 +55,7 @@ reg [5:0]   receive_bit_cnt;
 reg [3:0]   receive_ch_cnt;
 
 // FSM nextstate
-always@(posedge clk)
+always@(*)
 begin
     if(!rst_n) begin
         nextstate <= 2'b0;
@@ -186,7 +186,7 @@ begin
         weight_biu2arb_vld <= 1'b0;
     end
     else begin
-        if(state == 2'b10 & nextstate == 2'b00) begin
+        if(state == 2'b10 & cnt == 8'd15 & weight_biu2arb_vld & weight_biu2arb_rdy) begin
             weight_biu2arb_vld <= 1'b0;
         end
         else if(weight_biu2arb_req) begin
