@@ -1,12 +1,12 @@
-`define IN_ADDR_ADDR    32'h0000_0000
-`define W3_ADDR_ADDR    32'h0000_0004
-`define W1_ADDR_ADDR    32'h0000_0008
-`define OUT_ADDR_ADDR   32'h0000_000c
-`define START_ADDR      32'h0000_0010
-`define MAPSIZE_ADDR    32'h0000_0014
-`define ICH_ADDR        32'h0000_0018
-`define OCH_ADDR        32'h0000_001c
-`define DONE_ADDR       32'h0000_0020
+`define IN_ADDR_ADDR    32'h00000000
+`define W3_ADDR_ADDR    32'h00000004
+`define W1_ADDR_ADDR    32'h00000008
+`define OUT_ADDR_ADDR   32'h0000000c
+`define START_ADDR      32'h00000010
+`define MAPSIZE_ADDR    32'h00000014
+`define ICH_ADDR        32'h00000018
+`define OCH_ADDR        32'h0000001c
+`define DONE_ADDR       32'h00000020
 
 package driver_pkg;
 
@@ -170,6 +170,7 @@ package driver_pkg;
                 @(intf_master.icb_cmd_valid & intf_master.icb_cmd_ready) ;
                 @(posedge intf_master.clk) ;
                 intf_master.icb_cmd_valid  <= 1'b0;
+                intf_master.icb_rsp_ready  <= 1'b1;
             end
         endtask
 

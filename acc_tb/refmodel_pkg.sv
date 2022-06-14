@@ -130,9 +130,13 @@ package refmodel_pkg;
         endtask
 
         task run();
+            $display("start getting data");
             get_data();
+            $display("perform mac");
             mac();
+            $display("send output");
             send_output();
+            $display("refmodel finished");
         endtask
 
     endclass: refmodel

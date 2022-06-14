@@ -17,6 +17,7 @@ package env_pkg;
         mailbox #(convdata) gen2ref;
         mailbox #(output_data) ref2scb;
         mailbox #(output_data) mon2scb;
+        event e_check;
 
         function new(string name = "env_agent");
             this.name = name;
@@ -27,17 +28,19 @@ package env_pkg;
             this.gen  = new("generator", gen2drv, gen2ref);
             this.drv  = new("driver", gen2drv);
             this.refm = new("refmodel", gen2ref, ref2scb);
-            this.scb  = new("scoreboard", ref2scb, mon2scb);
-            this.mon  = new("monitor", mon2scb);
+            this.scb  = new("scoreboard", ref2scb, mon2scb, e_check);
+            this.mon  = new("monitor", mon2scb, e_check);
         endfunction
 
         function void set_interface(virtual icb_intf intf_master, virtual icb_intf intf_slave);
             drv.set_interface(intf_master, intf_slave);
-            mon.set_interface(intf_master);
+            mon.set_interface(intf_slave);
         endfunction
 
         task run();
+            $display("driver initialization");
             drv.initial_data();
+            $display("start running");
             fork
                 gen.gen_convdata();
                 drv.run();

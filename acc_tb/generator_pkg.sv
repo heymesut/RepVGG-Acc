@@ -39,6 +39,7 @@ package generator_pkg;
                 gen2drv.put(conv_data);
                 gen2ref.put(conv_data);
             end
+            $display("data generation finished");
         endtask
     endclass: convdata_generator
 
