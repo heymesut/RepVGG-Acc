@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/04 21:03
-// Last Modified : 2022/06/09 13:06
+// Last Modified : 2022/06/14 15:48
 // File Name     : map_merger.v
 // Description   : merge 3x3 omap, 1x1 omap and identity map with quantization
 //                 and activation
@@ -43,9 +43,9 @@ wire signed [31:0] merge_result = identity + map_3x3 + map_1x1;
 wire [31:0] act_merge = (merge_result[31]==0) ? merge_result : 32'b0;
 
 // quantization
-wire [7:0] quan_3x3 = map_3x3[31:24];
-wire [7:0] quan_1x1 = map_1x1[23:16];
-wire [7:0] quan_merge = act_merge[31:24];
+wire [7:0] quan_3x3 = map_3x3[24:17];
+wire [7:0] quan_1x1 = map_1x1[21:14];
+wire [7:0] quan_merge = act_merge[24:17];
 
 wire [31:0] map_merger_data_out =  {8'b0, quan_merge, quan_3x3, quan_1x1};
 
