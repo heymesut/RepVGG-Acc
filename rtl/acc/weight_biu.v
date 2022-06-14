@@ -189,7 +189,7 @@ begin
         if(state == 2'b10 & cnt == 8'd15 & weight_biu2arb_vld & weight_biu2arb_rdy) begin
             weight_biu2arb_vld <= 1'b0;
         end
-        else if(weight_biu2arb_req) begin
+        else if(weight_start) begin
             weight_biu2arb_vld <= 1'b1;
         end
     end

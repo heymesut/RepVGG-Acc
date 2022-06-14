@@ -165,7 +165,7 @@ begin
         if(cnt == 16'hc3ff & imap_biu2arb_vld & imap_biu2arb_rdy) begin
             imap_biu2arb_vld <= 1'b0;
         end
-        else if(imap_biu2arb_req) begin
+        else if(imap_start) begin
             imap_biu2arb_vld <= 1'b1;
         end
     end
