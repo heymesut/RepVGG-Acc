@@ -92,7 +92,7 @@ begin
         OCH <= 32'h0;
     end
     else begin
-        if(icb_cmd_valid & icb_rsp_ready & !icb_cmd_read) begin
+        if(icb_cmd_valid & icb_cmd_ready & !icb_cmd_read) begin
             case(icb_cmd_addr[11:0])
                 `IN_ADDR_ADDR:  IN_ADDR <= icb_cmd_wdata;
                 `W3_ADDR_ADDR:  W3_ADDR <= icb_cmd_wdata;
@@ -122,7 +122,7 @@ begin
         START <= 32'h0;
     end
     else begin
-        if(icb_cmd_valid & icb_rsp_ready & !icb_cmd_read & (icb_cmd_addr[11:0] == `START_ADDR)) begin
+        if(icb_cmd_valid & icb_cmd_ready & !icb_cmd_read & (icb_cmd_addr[11:0] == `START_ADDR)) begin
             START <= icb_cmd_wdata;
         end
         else if(START == 32'h0000_0001) begin
@@ -141,7 +141,7 @@ begin
         DONE <= 32'h0;
     end
     else begin
-        if(icb_cmd_valid & icb_rsp_ready & !icb_cmd_read & (icb_cmd_addr[11:0] == `DONE_ADDR)) begin
+        if(icb_cmd_valid & icb_cmd_ready & !icb_cmd_read & (icb_cmd_addr[11:0] == `DONE_ADDR)) begin
             DONE <= icb_cmd_wdata;
         end
         else if (acc_done) begin
@@ -179,7 +179,7 @@ begin
         icb_rsp_rdata <= 32'h0;
     end
     else begin
-        if(icb_cmd_valid & icb_rsp_ready & icb_cmd_read) begin
+        if(icb_cmd_valid & icb_cmd_ready & icb_cmd_read) begin
             case(icb_cmd_addr[11:0])
                 `IN_ADDR_ADDR:  icb_rsp_rdata <= IN_ADDR;
                 `W3_ADDR_ADDR:  icb_rsp_rdata <= W3_ADDR;
