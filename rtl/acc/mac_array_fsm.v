@@ -2,7 +2,7 @@
 // Project Name  : IC_Design
 // Author        : Heymesut
 // Created On    : 2022/06/08 10:57
-// Last Modified : 2022/06/14 21:35
+// Last Modified : 2022/06/14 23:26
 // File Name     : mac_array_fsm.v
 // Description   : mac array control
 //
@@ -55,7 +55,7 @@ localparam conv_s7         = 4'b1001;
 localparam conv_s8         = 4'b1010;
 localparam array_cool_down = 4'b1011;
 
-localparam NOCH = 8'd2;
+localparam NOCH = 8'd64;
 
 ///////////////////
 //

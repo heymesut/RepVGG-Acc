@@ -81,6 +81,12 @@ void spike_exit(int status)
 // never return for rtl
 void rtlsim_exit(int status)
 {
+
+    for (int i = 0; i < 30; i ++) {
+        uart_write(UART0, '\r');
+    }
+    uart_write(UART0, '\n');
+    
     __ASM volatile("li x3, 0xDEADBEEF");
     while (1) {
         __RV_CSR_WRITE(CSR_MSCRATCH, 0x1);
