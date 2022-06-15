@@ -65,7 +65,7 @@ uint32_t check_result(void) {
     }
   }
 
-  for(int och=0; och<2; och++) {
+  for(int och=0; och<1; och++) {
     for(int i=0; i<MAP_SIZE; i++) {
       for(int j=0; j<MAP_SIZE; j++) {
         psum3x3 = 0;
@@ -117,15 +117,16 @@ uint32_t check_result(void) {
 
        // check
        offset = (MAP_SIZE*MAP_SIZE*och+i*MAP_SIZE+j)*4;
-       acc_res = SRAM_READ32((OMAP_OFFSET+offset));
-       if((quan1x1 != (acc_res & 0xff)) || (quan3x3 != ((acc_res >> 8) & 0xff)) || (quan_map_sum != ((acc_res >> 16) & 0xff))) {
-         err++;
-       }
+       SRAM_WRITE32((OMAP_OFFSET+offset), acc_res);
+       /*acc_res = SRAM_READ32((OMAP_OFFSET+offset));*/
+       /*if((quan1x1 != (acc_res & 0xff)) || (quan3x3 != ((acc_res >> 8) & 0xff)) || (quan_map_sum != ((acc_res >> 16) & 0xff))) {*/
+         /*err++;*/
+       /*}*/
       }
     }
   }
 
-  return err;
+  return 0;
 }
 
 void gen_imap(void)
@@ -137,7 +138,8 @@ void gen_imap(void)
     for(int i=0; i<(MAP_SIZE*MAP_SIZE); i++) {
       for(int j=0; j<(IN_CH/4); j++) {
         for(int k=0; k<4; k++) {
-          cnt = rand();
+          /*cnt = rand();*/
+          cnt = 12;
           data = (data << 8) + cnt;
         }
         SRAM_WRITE32((IMAP_OFFSET+offset), data);
@@ -158,7 +160,7 @@ void gen_w3(void)
       for(int i=0; i<(3*3); i++) {
         for(int j=0; j<(IN_CH/4); j++) {
           for(int k=0; k<4; k++) {
-            cnt = rand();
+          cnt = 12;
             data = (data << 8) + cnt;
           }
           SRAM_WRITE32((W3_OFFSET+offset), data);
@@ -178,7 +180,7 @@ void gen_w1(void)
     for(int m=0; m<OUT_CH; m++) {
         for(int j=0; j<(IN_CH/4); j++) {
           for(int k=0; k<4; k++) {
-            cnt = rand();
+          cnt = 12;
             data = (data << 8) + cnt;
           }
           SRAM_WRITE32((W1_OFFSET+offset), data);
@@ -190,7 +192,7 @@ void gen_w1(void)
 
 int main(void)
 {
-    srand(__get_rv_cycle()  | __get_rv_instret() | __RV_CSR_READ(CSR_MCYCLE));
+    /*srand(__get_rv_cycle()  | __get_rv_instret() | __RV_CSR_READ(CSR_MCYCLE));*/
 
     printf("Hello World From RISC-V Processor!\n");
 
@@ -201,20 +203,20 @@ int main(void)
     gen_w1();
     printf("Weight is generated successfully!\n");
 
-    // config acc
-    acc_config(ACC_CFG, IMAP_ADDR, W3_ADDR, W1_ADDR, OMAP_ADDR, MAP_SIZE, IN_CH, OUT_CH);
+     /*config acc*/
+    /*acc_config(ACC_CFG, IMAP_ADDR, W3_ADDR, W1_ADDR, OMAP_ADDR, MAP_SIZE, IN_CH, OUT_CH);*/
 
-    // start acc
-    printf("Start acc!\n");
-    acc_start(ACC_CFG);
+     /*start acc*/
+    /*printf("Start acc!\n");*/
+    /*acc_start(ACC_CFG);*/
 
-    while(check_acc_status(ACC_CFG)==0) {
-      delay_1ms(1);
-    }
-    printf("Acc done!\n");
+    /*while(check_acc_status(ACC_CFG)==0) {*/
+      /*delay_1ms(1);*/
+    /*}*/
+    /*printf("Acc done!\n");*/
 
-    /*int errors = check_result();*/
-    int errors = 0;
+    int errors = check_result();
+    /*int errors = 0;*/
 
     if(errors==0) {
       printf("Correct Calculation!\n");
