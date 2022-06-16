@@ -42,14 +42,15 @@ VCS =	vcs -sverilog -timescale=1ns/1ns \
 	    +acc +vpi \
 	    -CFLAGS -DVCS -LDFLAGS -Wl,-no-as-needed -full64 -cpp g++-4.8 -cc gcc-4.8 \
 	    -fsdb \
-		+define+SIM
+		+define+SIM \
+		-cm fsm+line+branch+cond
 
 SIMV = 	./simv \
 		-l vcs.log \
 		+fsdb+sva_success \
 		-assert report \
 		-assert summary \
-		-cm assert
+		-cm fsm+line+branch+cond
 
 all: comp run
 
